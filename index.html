@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="안녕하세요, 저를 소개하는 한 페이지입니다." />
+  <title>About Me</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts — Pretendard 대체로 Noto Sans KR 사용 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body data-theme="dark">
+
+  <!-- ───────────── 네비게이션 ───────────── -->
+  <nav class="nav" role="navigation" aria-label="메인 네비게이션">
+    <div class="nav__inner">
+      <a href="#hero" class="nav__logo" aria-label="홈으로 이동">✦</a>
+      <ul class="nav__links">
+        <li><a href="#about">소개</a></li>
+        <li><a href="#tech">기술</a></li>
+        <li><a href="#contact">연락</a></li>
+      </ul>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        type="button"
+        aria-label="테마 전환"
+        title="다크/라이트 테마 전환"
+      >
+        <span class="theme-toggle__icon" aria-hidden="true">☀️</span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ───────────── Hero 섹션 ───────────── -->
+    <section id="hero" class="hero section">
+      <div class="hero__content fade-in">
+        <p class="hero__greeting">안녕하세요 👋</p>
+        <h1 class="hero__name">
+          저는 <span class="highlight">조원웅</span>입니다
+        </h1>
+        <p class="hero__tagline">
+          컴퓨터에 관심이 많은 취준생입니다.
+        </p>
+        <a href="#about" class="hero__scroll" aria-label="아래로 스크롤">
+          <span class="hero__arrow" aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ───────────── About Me 섹션 ───────────── -->
+    <section id="about" class="about section">
+      <h2 class="section__title fade-in">좋아하는 것들</h2>
+      <p class="section__subtitle fade-in">제가 시간을 보내는 방법들이에요.</p>
+
+      <div class="card-grid fade-in">
+        <article class="card" tabindex="0">
+          <span class="card__icon" aria-hidden="true">🎵</span>
+          <h3 class="card__title">음악 감상</h3>
+          <p class="card__desc">장르를 가리지 않고 듣습니다. 공부할 때는 R&B를 즐겨 틀어요.</p>
+        </article>
+
+        <article class="card" tabindex="0">
+          <span class="card__icon" aria-hidden="true">📚</span>
+          <h3 class="card__title">독서</h3>
+          <p class="card__desc">천문학이나 역사 관련 전문 서적과 추리/스릴러 소설을 좋아합니다. 최근에는 네트워크 보안 관련 책을 읽고 있어요.</p>
+        </article>
+
+        <article class="card" tabindex="0">
+          <span class="card__icon" aria-hidden="true">🎮</span>
+          <h3 class="card__title">게임</h3>
+          <p class="card__desc">퍼즐 게임을 좋아합니다. 문제 해결 과정이 재밌어요.</p>
+        </article>
+
+        <article class="card" tabindex="0">
+          <span class="card__icon" aria-hidden="true">☕</span>
+          <h3 class="card__title">카페 탐방</h3>
+          <p class="card__desc">새로운 카페를 찾아다니며 커피와 분위기를 즐깁니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ───────────── Tech Stack 섹션 ───────────── -->
+    <section id="tech" class="tech section">
+      <h2 class="section__title fade-in">기술 & 관심 분야</h2>
+      <p class="section__subtitle fade-in">배우고 있거나 관심을 두고 있는 기술들입니다.</p>
+
+      <div class="tech__group fade-in">
+        <h3 class="tech__category">Languages</h3>
+        <div class="tag-cloud">
+          <span class="tag">Python</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+
+      <div class="tech__group fade-in">
+        <h3 class="tech__category">Tools & Platforms</h3>
+        <div class="tag-cloud">
+          <span class="tag">Git / GitHub</span>
+          <span class="tag">VS Code</span>
+          <span class="tag">Vercel</span>
+        </div>
+      </div>
+
+      <div class="tech__group fade-in">
+        <h3 class="tech__category">관심 분야</h3>
+        <div class="tag-cloud">
+          <span class="tag tag--accent">AI / 자동화</span>
+          <span class="tag tag--accent">네트워크 분석</span>
+          <span class="tag tag--accent">데이터 사이언스</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────── Contact 섹션 ───────────── -->
+    <section id="contact" class="contact section">
+      <h2 class="section__title fade-in">연락처</h2>
+      <p class="section__subtitle fade-in">아래 채널로 편하게 연락주세요.</p>
+
+      <div class="contact__links fade-in">
+        <a
+          href="https://github.com/dldaudlee36"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact__item"
+          aria-label="GitHub 프로필 (새 탭에서 열림)"
+        >
+          <span class="contact__icon" aria-hidden="true">
+            <!-- GitHub SVG -->
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+              <path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.11.82-.26.82-.58v-2.16c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 0 0-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 0 1 1.84 1.24 2.56 2.56 0 0 0 3.5 1 2.56 2.56 0 0 1 .76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 0 1 1.24-3.22 4.3 4.3 0 0 1 .12-3.18s1-.33 3.3 1.23a11.38 11.38 0 0 1 6 0c2.28-1.56 3.29-1.23 3.29-1.23a4.3 4.3 0 0 1 .12 3.18 4.64 4.64 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.93a2.86 2.86 0 0 1 .82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/>
+            </svg>
+          </span>
+          <span class="contact__label">GitHub</span>
+        </a>
+
+        <a
+          href="mailto:dlraudlee@gmail.com"
+          class="contact__item"
+          aria-label="이메일 보내기"
+        >
+          <span class="contact__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </span>
+          <span class="contact__label">Email</span>
+        </a>
+
+        <a
+          href="https://linkedin.com/in/your-profile"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact__item"
+          aria-label="LinkedIn 프로필 (새 탭에서 열림)"
+        >
+          <span class="contact__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+          </span>
+          <span class="contact__label">LinkedIn</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ───────────── Footer ───────────── -->
+  <footer class="footer">
+    <p>© 2026 홍길동 · 나를 소개하는 한 페이지</p>
+    <p class="footer__meta">마지막 업데이트: 2026.09</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

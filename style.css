@@ -1,0 +1,473 @@
+/* ============================================================
+   style.css — 나를 소개하는 한 페이지
+   다크 모드 기본 · 반응형 · 키보드 접근성
+   ============================================================ */
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+/* ── Theme Variables ──────────────────────────────────────── */
+:root {
+  /* 공통 */
+  --font-body: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  --font-mono: "Fira Code", monospace;
+  --radius: 12px;
+  --transition: 0.3s ease;
+  --max-width: 900px;
+  --section-gap: 6rem;
+}
+
+/* 다크 테마 (기본) */
+[data-theme="dark"] {
+  --bg: #0e0e12;
+  --bg-card: #1a1a24;
+  --bg-nav: rgba(14, 14, 18, 0.85);
+  --text: #e4e4e7;
+  --text-muted: #9b9ba4;
+  --accent: #818cf8;
+  --accent-hover: #a5b4fc;
+  --border: #27272f;
+  --tag-bg: #1e1e2e;
+  --tag-border: #3b3b50;
+  --tag-accent-bg: rgba(129, 140, 248, 0.12);
+  --tag-accent-border: rgba(129, 140, 248, 0.35);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --hero-gradient: linear-gradient(160deg, #0e0e12 0%, #1a1a2e 100%);
+}
+
+/* 라이트 테마 */
+[data-theme="light"] {
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --bg-nav: rgba(250, 250, 250, 0.85);
+  --text: #1a1a2e;
+  --text-muted: #6b6b80;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --border: #e4e4e7;
+  --tag-bg: #f0f0f5;
+  --tag-border: #d4d4dc;
+  --tag-accent-bg: rgba(99, 102, 241, 0.08);
+  --tag-accent-border: rgba(99, 102, 241, 0.3);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --hero-gradient: linear-gradient(160deg, #fafafa 0%, #ede9fe 100%);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition: background var(--transition), color var(--transition);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Focus Visible (키보드 접근성) ─────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* ── Navigation ───────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg-nav);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.nav__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav__logo {
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: var(--accent);
+  transition: transform var(--transition);
+}
+.nav__logo:hover {
+  transform: scale(1.15);
+  color: var(--accent);
+}
+
+.nav__links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.nav__links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.nav__links a:hover {
+  color: var(--text);
+}
+
+/* ── Theme Toggle ─────────────────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color var(--transition), transform var(--transition);
+  color: var(--text);
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: rotate(30deg);
+}
+.theme-toggle__icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ── Sections Common ──────────────────────────────────────── */
+.section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--section-gap) 1.5rem;
+}
+
+.section__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.section__subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  background: var(--hero-gradient);
+  transition: background var(--transition);
+}
+
+.hero__greeting {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.hero__name {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.highlight {
+  color: var(--accent);
+  position: relative;
+}
+.highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 100%;
+  height: 6px;
+  background: var(--accent);
+  opacity: 0.2;
+  border-radius: 3px;
+}
+
+.hero__tagline {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 3rem;
+}
+
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-muted);
+  transition: border-color var(--transition), transform var(--transition);
+}
+.hero__scroll:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(4px);
+}
+.hero__arrow {
+  font-size: 1.2rem;
+  animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── About — Card Grid ────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.5rem;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  cursor: default;
+}
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+.card__icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.card__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card__desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Tech — Tag Cloud ─────────────────────────────────────── */
+.tech__group {
+  margin-bottom: 2rem;
+}
+
+.tech__category {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  border-radius: 999px;
+  color: var(--text);
+  transition: transform var(--transition), border-color var(--transition);
+  user-select: none;
+}
+.tag:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.tag--accent {
+  background: var(--tag-accent-bg);
+  border-color: var(--tag-accent-border);
+  color: var(--accent);
+}
+
+/* ── Contact ──────────────────────────────────────────────── */
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  justify-content: center;
+}
+
+.contact__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  min-width: 140px;
+}
+.contact__item:hover,
+.contact__item:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.contact__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.footer__meta {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* ── Fade-in Animation ────────────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+/* 태블릿 (768px 이하) */
+@media (max-width: 768px) {
+  :root {
+    --section-gap: 4rem;
+  }
+  .hero__name {
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
+  }
+  .card-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .contact__links {
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact__item {
+    width: 100%;
+    max-width: 320px;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+/* 모바일 (480px 이하) */
+@media (max-width: 480px) {
+  :root {
+    --section-gap: 3rem;
+  }
+  .nav__links {
+    gap: 1rem;
+  }
+  .nav__links a {
+    font-size: 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .section__title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ── Reduced Motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
+}
