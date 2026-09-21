@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="안녕하세요, 저를 소개하는 한 페이지입니다." />
-  <title>About Me</title>
+  <title>About Me — 패스키 보호</title>
   <link rel="stylesheet" href="style.css" />
   <!-- Google Fonts — Pretendard 대체로 Noto Sans KR 사용 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body data-theme="dark">
+
+  <div id="toast" class="toast hidden"></div>
 
   <!-- ───────────── 네비게이션 ───────────── -->
   <nav class="nav" role="navigation" aria-label="메인 네비게이션">
@@ -21,6 +23,7 @@
         <li><a href="#about">소개</a></li>
         <li><a href="#tech">기술</a></li>
         <li><a href="#contact">연락</a></li>
+        <li><a href="#vault" class="nav__vault-link">🔒 비공개 금고</a></li>
       </ul>
       <button
         class="theme-toggle"
@@ -51,10 +54,10 @@
       </div>
     </section>
 
-    <!-- ───────────── About Me 섹션 ───────────── -->
+    <!-- ───────────── About Me 섹션 (공개 영역) ───────────── -->
     <section id="about" class="about section">
       <h2 class="section__title fade-in">좋아하는 것들</h2>
-      <p class="section__subtitle fade-in">제가 시간을 보내는 방법들이에요.</p>
+      <p class="section__subtitle fade-in">제가 시간을 보내는 방법들이에요. (누구나 볼 수 있는 공개 영역)</p>
 
       <div class="card-grid fade-in">
         <article class="card" tabindex="0">
@@ -89,7 +92,7 @@
       </div>
     </section>
 
-    <!-- ───────────── Tech Stack 섹션 ───────────── -->
+    <!-- ───────────── Tech Stack 섹션 (공개 영역) ───────────── -->
     <section id="tech" class="tech section">
       <h2 class="section__title fade-in">기술 & 관심 분야</h2>
       <p class="section__subtitle fade-in">배우고 있거나 관심을 두고 있는 것들입니다.</p>
@@ -99,6 +102,7 @@
         <div class="tag-cloud">
           <span class="tag">Python</span>
           <span class="tag">SQL</span>
+          <span class="tag tag--accent">Web Crypto API</span>
         </div>
       </div>
 
@@ -116,12 +120,12 @@
         <div class="tag-cloud">
           <span class="tag tag--accent">AI / 자동화</span>
           <span class="tag tag--accent">네트워크 분석</span>
-          <span class="tag tag--accent">데이터 사이언스</span>
+          <span class="tag tag--accent">패스키 & 비대칭키 암호화</span>
         </div>
       </div>
     </section>
 
-    <!-- ───────────── Contact 섹션 ───────────── -->
+    <!-- ───────────── Contact 섹션 (공개 영역) ───────────── -->
     <section id="contact" class="contact section">
       <h2 class="section__title fade-in">연락처</h2> 
       <p class="section__subtitle fade-in">아래 채널로 편하게 연락주세요.</p>
@@ -135,7 +139,6 @@
           aria-label="GitHub 프로필 (새 탭에서 열림)"
         >
           <span class="contact__icon" aria-hidden="true">
-            <!-- GitHub SVG -->
             <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
               <path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.11.82-.26.82-.58v-2.16c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 0 0-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 0 1 1.84 1.24 2.56 2.56 0 0 0 3.5 1 2.56 2.56 0 0 1 .76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 0 1 1.24-3.22 4.3 4.3 0 0 1 .12-3.18s1-.33 3.3 1.23a11.38 11.38 0 0 1 6 0c2.28-1.56 3.29-1.23 3.29-1.23a4.3 4.3 0 0 1 .12 3.18 4.64 4.64 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.93a2.86 2.86 0 0 1 .82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/>
             </svg>
@@ -170,6 +173,79 @@
           </span>
           <span class="contact__label">LinkedIn</span>
         </a>
+      </div>
+    </section>
+
+    <!-- ───────────── [과제 8] 패스키 금고 및 비공개 영역 ───────────── -->
+    <section id="vault" class="vault section">
+      <div class="vault__header fade-in">
+        <h2 class="section__title">나만의 비공개 자리 (Passkey Vault)</h2>
+        <p class="section__subtitle">비밀번호 없이 기기에서 생성된 비대칭 패스키로만 열 수 있는 보안 구역입니다.</p>
+      </div>
+
+      <!-- 패스키 인증 컨트롤러 카드 -->
+      <div class="vault__card fade-in">
+        <div class="vault__card-top">
+          <div>
+            <h3 class="vault__card-title">🔑 패스키 인증 관리 센터</h3>
+            <p class="vault__card-desc">개인키는 기기 내부에만 보관되며, 서버에는 암호화된 공개키만 저장됩니다.</p>
+          </div>
+          <button id="btnRegisterPasskey" class="btn btn--primary" type="button">
+            + 새 패스키 등록 (열쇠 쌍 생성)
+          </button>
+        </div>
+
+        <!-- 서버 등록 공개키 목록 -->
+        <div class="vault__keys-wrapper">
+          <span class="vault__label">서버에 저장된 공개키(Public Key) 목록:</span>
+          <div id="passkeyList" class="vault__keys-list">
+            <!-- 자바스크립트로 동적 렌더링 -->
+          </div>
+        </div>
+
+        <!-- 인증 및 테스트 버튼 그룹 -->
+        <div class="vault__actions">
+          <button id="btnLoginPasskey" class="btn btn--accent" type="button">
+            🔓 패스키로 비공개 자리 열기
+          </button>
+          <button id="btnTestReplay" class="btn btn--outline" type="button">
+            ⚠️ 챌린지 재사용 공격 테스트
+          </button>
+          <button id="btnTestForged" class="btn btn--outline-danger" type="button">
+            ⚠️ 타인 패스키 위조 테스트
+          </button>
+          <button id="btnLockVault" class="btn btn--secondary hidden" type="button">
+            비공개 자리 다시 잠그기
+          </button>
+        </div>
+
+        <!-- 통신 요청/응답 콘솔 (체크리스트 5번 증거) -->
+        <div class="vault__console">
+          <div class="vault__console-bar">
+            <span>NETWORK AUTHENTICATION LOG</span>
+            <span id="logBadge" class="vault__console-badge">STANDBY</span>
+          </div>
+          <pre id="authConsoleLog" class="vault__console-body">패스키 인증 요청 대기 중...</pre>
+        </div>
+      </div>
+
+      <!-- [잠긴 비공개 영역] 패스키 인증 통과 시에만 노출 -->
+      <div id="privateSecretArea" class="vault__secret hidden fade-in">
+        <div class="vault__secret-inner">
+          <div class="vault__secret-header">
+            <span class="vault__secret-badge">🔒 ACCESS GRANTED</span>
+            <h3 class="vault__secret-title">나만 볼 수 있는 비공개 메모</h3>
+          </div>
+          <div class="vault__secret-content">
+            <h4>[차기 개발 프로젝트 & 보안 아키텍처 구상안]</h4>
+            <ul>
+              <li><strong>무비밀번호(Passwordless) 고도화:</strong> FIDO2 / WebAuthn 하드웨어 토큰(YubiKey) 연동 연구</li>
+              <li><strong>개인키 유출 원천 방지:</strong> 디바이스 Secure Enclave(보안 영역) 내부 격리 서명 프로토콜 적용</li>
+              <li><strong>기기 분실 대비 복구 메커니즘:</strong> 서브 기기(스마트폰) 공개키 지문 대조를 통한 권한 회수 절차 확립</li>
+            </ul>
+            <p class="vault__secret-notice">* 실제 연락처, 주민번호, 비밀번호 등의 민감 개인정보는 포함되어 있지 않습니다.</p>
+          </div>
+        </div>
       </div>
     </section>
   </main>
