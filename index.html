@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="안녕하세요, 저를 소개하는 한 페이지입니다." />
   <title>About Me — 패스키 보호</title>
-  <!-- Google Fonts — Pretendard 대체로 Noto Sans KR 사용 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     /* ============================================================
-       style.css 통합본 — 나를 소개하는 한 페이지 + 패스키 금고
+       style.css — 완전 화면 분리형 (공개 뷰 vs 비공개 뷰)
        ============================================================ */
     *, *::before, *::after {
       margin: 0;
@@ -31,7 +30,7 @@
       --radius: 12px;
       --transition: 0.3s ease;
       --max-width: 900px;
-      --section-gap: 6rem;
+      --section-gap: 5rem;
     }
 
     [data-theme="dark"] {
@@ -77,121 +76,61 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    :focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
     :focus:not(:focus-visible) { outline: none; }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color var(--transition);
-    }
+    a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
     a:hover { color: var(--accent-hover); }
 
     /* Nav */
     .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: var(--bg-nav);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      transition: background var(--transition);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--bg-nav); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); transition: background var(--transition);
     }
     .nav__inner {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0.75rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: var(--max-width); margin: 0 auto; padding: 0.75rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .nav__logo {
-      font-size: 1.4rem;
-      color: var(--accent);
-      transition: transform var(--transition);
-    }
+    .nav__logo { font-size: 1.4rem; color: var(--accent); transition: transform var(--transition); cursor: pointer; }
     .nav__logo:hover { transform: scale(1.15); }
-    .nav__links {
-      list-style: none;
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
+    .nav__links { list-style: none; display: flex; gap: 1.5rem; align-items: center; }
+    .nav__links a, .nav__links button {
+      font-size: 0.9rem; font-weight: 500; color: var(--text-muted); background: none; border: none; cursor: pointer;
+      font-family: var(--font-body);
     }
-    .nav__links a {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-muted);
+    .nav__links a:hover, .nav__links button:hover, .nav__links a.active { color: var(--text); }
+    
+    .nav__vault-btn {
+      display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem;
+      border-radius: 6px; background: rgba(129, 140, 248, 0.15) !important;
+      border: 1px solid var(--accent) !important; color: var(--accent) !important; font-weight: 700 !important;
     }
-    .nav__links a:hover, .nav__links a.active { color: var(--text); }
-    .nav__vault-link {
-      color: var(--accent) !important;
-      font-weight: 700;
-    }
+    .nav__vault-btn:hover { background: var(--accent) !important; color: #fff !important; }
 
     .theme-toggle {
-      background: none;
-      border: 1.5px solid var(--border);
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text);
-      transition: border-color var(--transition), transform var(--transition);
+      background: none; border: 1.5px solid var(--border); border-radius: 50%;
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); transition: border-color var(--transition), transform var(--transition);
     }
-    .theme-toggle:hover {
-      border-color: var(--accent);
-      transform: rotate(30deg);
-    }
+    .theme-toggle:hover { border-color: var(--accent); transform: rotate(30deg); }
 
-    /* Section Common */
-    .section {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: var(--section-gap) 1.5rem;
-    }
-    .section__title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.02em;
-    }
-    .section__subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 2.5rem;
-    }
+    /* Sections Common */
+    .section { max-width: var(--max-width); margin: 0 auto; padding: var(--section-gap) 1.5rem; }
+    .section__title { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .section__subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 2.5rem; }
 
     /* Hero */
     .hero {
-      min-height: 100vh;
-      min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: var(--hero-gradient);
+      min-height: 92vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; background: var(--hero-gradient);
     }
-    .hero__greeting { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0.75rem; }
-    .hero__name {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 700;
-      margin-bottom: 1rem;
-      letter-spacing: -0.03em;
-    }
+    .hero__name { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.03em; }
     .highlight { color: var(--accent); position: relative; }
     .highlight::after {
       content: ""; position: absolute; left: 0; bottom: 2px;
       width: 100%; height: 6px; background: var(--accent); opacity: 0.2; border-radius: 3px;
     }
-    .hero__tagline { font-size: 1.15rem; color: var(--text-muted); max-width: 480px; margin: 0 auto 3rem; }
     .hero__scroll {
       display: inline-flex; align-items: center; justify-content: center;
       width: 44px; height: 44px; border: 1.5px solid var(--border); border-radius: 50%;
@@ -202,28 +141,17 @@
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
     /* Card Grid */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.25rem;
-    }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
     .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.75rem 1.5rem;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.75rem 1.5rem; transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
     }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-      border-color: var(--accent);
-    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); }
     .card__icon { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
     .card__title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
     .card__desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
-    /* Tech Stack */
+    /* Tech */
     .tech__group { margin-bottom: 2rem; }
     .tech__category { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
     .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -245,15 +173,22 @@
     }
     .contact__item:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); color: var(--accent); }
 
-    /* Vault Section (과제 8) */
-    .vault { border-top: 1px solid var(--border); }
+    /* ── [독립 비공개 뷰 전용 스타일] ──────────────────────── */
+    #vaultView {
+      min-height: 85vh; padding-top: 6rem; padding-bottom: 5rem;
+      max-width: var(--max-width); margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem;
+    }
+    .vault-back-bar { margin-bottom: 1.5rem; }
+    .btn--back {
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 1rem;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-size: 0.85rem; cursor: pointer; transition: all var(--transition);
+    }
+    .btn--back:hover { border-color: var(--accent); color: var(--accent); }
+
     .vault__card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
-      margin-bottom: 2rem;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem;
     }
     .vault__card-top {
       display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;
@@ -337,16 +272,15 @@
     .hidden { display: none !important; }
 
     @media (max-width: 768px) {
-      :root { --section-gap: 4rem; }
+      :root { --section-gap: 3.5rem; }
       .hero__name { font-size: clamp(1.6rem, 6vw, 2.4rem); }
       .card-grid { grid-template-columns: 1fr 1fr; }
       .contact__links { flex-direction: column; align-items: center; }
       .contact__item { width: 100%; max-width: 320px; flex-direction: row; justify-content: center; }
     }
     @media (max-width: 480px) {
-      :root { --section-gap: 3rem; }
-      .nav__links { gap: 1rem; }
-      .nav__links a { font-size: 0.8rem; }
+      .nav__links { gap: 0.75rem; }
+      .nav__links a, .nav__links button { font-size: 0.8rem; }
       .card-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -358,12 +292,17 @@
   <!-- ───────────── 네비게이션 ───────────── -->
   <nav class="nav" role="navigation" aria-label="메인 네비게이션">
     <div class="nav__inner">
-      <a href="#hero" class="nav__logo" aria-label="홈으로 이동">✦</a>
+      <div class="nav__logo" id="navLogo" title="공개 소개 페이지 홈으로">✦</div>
       <ul class="nav__links">
-        <li><a href="#about">소개</a></li>
-        <li><a href="#tech">기술</a></li>
-        <li><a href="#contact">연락</a></li>
-        <li><a href="#vault" class="nav__vault-link">🔒 비공개 금고</a></li>
+        <li><a href="#about" id="navAbout">소개</a></li>
+        <li><a href="#tech" id="navTech">기술</a></li>
+        <li><a href="#contact" id="navContact">연락</a></li>
+        <!-- 상단 메뉴 클릭으로만 진입되는 비공개 전환 버튼 -->
+        <li>
+          <button id="btnOpenVaultView" class="nav__vault-btn" type="button">
+            🔒 비공개 금고
+          </button>
+        </li>
       </ul>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="테마 전환" title="다크/라이트 테마 전환">
         <span class="theme-toggle__icon" aria-hidden="true">☀️</span>
@@ -371,19 +310,19 @@
     </div>
   </nav>
 
-  <main>
-    <!-- ───────────── Hero 섹션 ───────────── -->
-<!-- ───────────── Hero 섹션 (여백 최적화 및 정보 밀도 보강) ───────────── -->
+  <!-- ============================================================
+       [VIEW 1] 공개 소개 페이지 (기본 노출 화면 - 스크롤해도 금고 안 보임)
+       ============================================================ -->
+  <main id="publicView">
+    <!-- Hero 섹션 -->
     <section id="hero" class="hero section">
       <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
         
-        <!-- 상태 배지 -->
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--tag-accent-bg); border: 1px solid var(--tag-accent-border); font-size: 0.8rem; color: var(--accent); font-family: var(--font-mono);">
           <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
           보안과 자동화 기술을 탐구하는 주니어 엔지니어
         </div>
 
-        <!-- 이름 및 타이틀 -->
         <div>
           <p class="hero__greeting" style="margin-bottom: 0.25rem;">안녕하세요 👋</p>
           <h1 class="hero__name" style="margin-bottom: 0.5rem;">
@@ -395,7 +334,6 @@
           </p>
         </div>
 
-        <!-- 빠른 포커스 영역 (Quick Specs) -->
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; margin-top: 0.5rem;">
           <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius); text-align: center;">
             <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-family: var(--font-mono);">FOCUS</span>
@@ -411,24 +349,22 @@
           </div>
         </div>
 
-        <!-- 빠른 행동 버튼 (CTA) -->
         <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
-          <a href="#vault" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.25rem; text-decoration: none;">
-            <span>🔒</span> 비공개 패스키 금고 가기
-          </a>
+          <button id="btnHeroVaultCTA" class="btn btn--primary" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.25rem;">
+            <span>🔒</span> 비공개 패스키 금고 열기
+          </button>
           <a href="#about" class="btn btn--outline" style="padding: 0.65rem 1.25rem; text-decoration: none;">
             소개 더보기
           </a>
         </div>
 
-        <!-- 아래로 스크롤 버튼 -->
         <a href="#about" class="hero__scroll" aria-label="아래로 스크롤" style="margin-top: 1rem;">
           <span class="hero__arrow" aria-hidden="true">↓</span>
         </a>
       </div>
     </section>
 
-    <!-- ───────────── About Me 섹션 (공개 영역) ───────────── -->
+    <!-- About Me 섹션 -->
     <section id="about" class="about section">
       <h2 class="section__title fade-in">좋아하는 것들</h2>
       <p class="section__subtitle fade-in">제가 시간을 보내는 방법들이에요. (누구나 볼 수 있는 공개 영역)</p>
@@ -466,7 +402,7 @@
       </div>
     </section>
 
-    <!-- ───────────── Tech Stack 섹션 (공개 영역) ───────────── -->
+    <!-- Tech Stack 섹션 -->
     <section id="tech" class="tech section">
       <h2 class="section__title fade-in">기술 & 관심 분야</h2>
       <p class="section__subtitle fade-in">배우고 있거나 관심을 두고 있는 것들입니다.</p>
@@ -499,7 +435,7 @@
       </div>
     </section>
 
-    <!-- ───────────── Contact 섹션 (공개 영역) ───────────── -->
+    <!-- Contact 섹션 -->
     <section id="contact" class="contact section">
       <h2 class="section__title fade-in">연락처</h2> 
       <p class="section__subtitle fade-in">아래 채널로 편하게 연락주세요.</p>
@@ -533,74 +469,89 @@
         </a>
       </div>
     </section>
-
-    <!-- ───────────── [과제 8] 패스키 금고 및 비공개 영역 ───────────── -->
-    <section id="vault" class="vault section">
-      <div class="vault__header fade-in">
-        <h2 class="section__title">나만의 비공개 자리 (Passkey Vault)</h2>
-        <p class="section__subtitle">비밀번호 없이 기기에서 생성된 비대칭 패스키로만 열 수 있는 보안 구역입니다.</p>
-      </div>
-
-      <div class="vault__card fade-in">
-        <div class="vault__card-top">
-          <div>
-            <h3 class="vault__card-title">🔑 패스키 인증 관리 센터</h3>
-            <p class="vault__card-desc">개인키는 기기 내부에만 보관되며, 서버에는 암호화된 공개키만 저장됩니다.</p>
-          </div>
-          <button id="btnRegisterPasskey" class="btn btn--primary" type="button">
-            + 새 패스키 등록 (열쇠 쌍 생성)
-          </button>
-        </div>
-
-        <div class="vault__keys-wrapper">
-          <span class="vault__label">서버에 저장된 공개키(Public Key) 목록:</span>
-          <div id="passkeyList" class="vault__keys-list"></div>
-        </div>
-
-        <div class="vault__actions">
-          <button id="btnLoginPasskey" class="btn btn--accent" type="button">
-            🔓 패스키로 비공개 자리 열기
-          </button>
-          <button id="btnTestReplay" class="btn btn--outline" type="button">
-            ⚠️ 챌린지 재사용 공격 테스트
-          </button>
-          <button id="btnTestForged" class="btn btn--outline-danger" type="button">
-            ⚠️ 타인 패스키 위조 테스트
-          </button>
-          <button id="btnLockVault" class="btn btn--secondary hidden" type="button">
-            비공개 자리 다시 잠그기
-          </button>
-        </div>
-
-        <div class="vault__console">
-          <div class="vault__console-bar">
-            <span>NETWORK AUTHENTICATION LOG</span>
-            <span id="logBadge" class="vault__console-badge">STANDBY</span>
-          </div>
-          <pre id="authConsoleLog" class="vault__console-body">패스키 인증 요청 대기 중...</pre>
-        </div>
-      </div>
-
-      <div id="privateSecretArea" class="vault__secret hidden fade-in">
-        <div class="vault__secret-inner">
-          <div class="vault__secret-header">
-            <span class="vault__secret-badge">🔒 ACCESS GRANTED</span>
-            <h3 class="vault__secret-title">나만 볼 수 있는 비공개 메모</h3>
-          </div>
-          <div class="vault__secret-content">
-            <h4>[차기 개발 프로젝트 & 보안 아키텍처 구상안]</h4>
-            <ul>
-              <li><strong>무비밀번호(Passwordless) 고도화:</strong> FIDO2 / WebAuthn 하드웨어 토큰(YubiKey) 연동 연구</li>
-              <li><strong>개인키 유출 원천 방지:</strong> 디바이스 Secure Enclave 내부 격리 서명 프로토콜 적용</li>
-              <li><strong>기기 분실 대비 복구 메커니즘:</strong> 예비 기기 공개키 지문 대조를 통한 권한 회수 절차 확립</li>
-            </ul>
-            <p class="vault__secret-notice">* 실제 연락처, 주민번호, 비밀번호 등의 민감 개인정보는 포함되어 있지 않습니다.</p>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
+  <!-- ============================================================
+       [VIEW 2] 완전히 격리된 독립 비공개 금고 뷰 (기본 hidden)
+       ============================================================ -->
+  <section id="vaultView" class="hidden">
+    <!-- 뒤로가기 버튼 -->
+    <div class="vault-back-bar">
+      <button id="btnBackToPublic" class="btn--back" type="button">
+        ← 공개 소개 페이지로 돌아가기
+      </button>
+    </div>
+
+    <div class="vault__header">
+      <h2 class="section__title">나만의 비공개 자리 (Passkey Vault)</h2>
+      <p class="section__subtitle">비밀번호 없이 기기에서 생성된 비대칭 패스키로만 열 수 있는 독립 보안 구역입니다.</p>
+    </div>
+
+    <!-- 패스키 제어 카드 -->
+    <div class="vault__card">
+      <div class="vault__card-top">
+        <div>
+          <h3 class="vault__card-title">🔑 패스키 인증 관리 센터</h3>
+          <p class="vault__card-desc">개인키는 기기 내부에만 보관되며, 서버에는 암호화된 공개키만 저장됩니다.</p>
+        </div>
+        <button id="btnRegisterPasskey" class="btn btn--primary" type="button">
+          + 새 패스키 등록 (열쇠 쌍 생성)
+        </button>
+      </div>
+
+      <!-- 공개키 목록 -->
+      <div class="vault__keys-wrapper">
+        <span class="vault__label">서버에 저장된 공개키(Public Key) 목록:</span>
+        <div id="passkeyList" class="vault__keys-list"></div>
+      </div>
+
+      <!-- 제어 액션 -->
+      <div class="vault__actions">
+        <button id="btnLoginPasskey" class="btn btn--accent" type="button">
+          🔓 패스키로 비공개 자리 열기
+        </button>
+        <button id="btnTestReplay" class="btn btn--outline" type="button">
+          ⚠️ 챌린지 재사용 공격 테스트
+        </button>
+        <button id="btnTestForged" class="btn btn--outline-danger" type="button">
+          ⚠️ 타인 패스키 위조 테스트
+        </button>
+        <button id="btnLockVault" class="btn btn--secondary hidden" type="button">
+          비공개 자리 다시 잠그기
+        </button>
+      </div>
+
+      <!-- 콘솔 로그 창 -->
+      <div class="vault__console">
+        <div class="vault__console-bar">
+          <span>NETWORK AUTHENTICATION LOG</span>
+          <span id="logBadge" class="vault__console-badge">STANDBY</span>
+        </div>
+        <pre id="authConsoleLog" class="vault__console-body">패스키 인증 요청 대기 중...</pre>
+      </div>
+    </div>
+
+    <!-- [진짜 비공개 시크릿 본문] 패스키 서명 통과 시에만 노출 -->
+    <div id="privateSecretArea" class="vault__secret hidden">
+      <div class="vault__secret-inner">
+        <div class="vault__secret-header">
+          <span class="vault__secret-badge">🔒 ACCESS GRANTED</span>
+          <h3 class="vault__secret-title">나만 볼 수 있는 비공개 메모</h3>
+        </div>
+        <div class="vault__secret-content">
+          <h4>[차기 개발 프로젝트 & 보안 아키텍처 구상안]</h4>
+          <ul>
+            <li><strong>무비밀번호(Passwordless) 고도화:</strong> FIDO2 / WebAuthn 하드웨어 토큰(YubiKey) 연동 연구</li>
+            <li><strong>개인키 유출 원천 방지:</strong> 디바이스 Secure Enclave 내부 격리 서명 프로토콜 적용</li>
+            <li><strong>기기 분실 대비 복구 메커니즘:</strong> 예비 기기 공개키 지문 대조를 통한 권한 회수 절차 확립</li>
+          </ul>
+          <p class="vault__secret-notice">* 실제 연락처, 주민번호, 비밀번호 등의 민감 개인정보는 포함되어 있지 않습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
     <p>© 2026 조원웅 · 나를 소개하는 한 페이지</p>
     <p class="footer__meta">마지막 업데이트: 2026.09</p>
@@ -608,12 +559,46 @@
 
   <script>
     /* ============================================================
-       script.js 통합본
+       script.js — SPA 화면 전환 + 패스키 암호화 엔진
        ============================================================ */
     (function () {
       "use strict";
 
-      // 1. 테마 토글
+      // 1. 화면 라우팅 (View 전환)
+      const publicView = document.getElementById("publicView");
+      const vaultView = document.getElementById("vaultView");
+      const btnOpenVaultView = document.getElementById("btnOpenVaultView");
+      const btnHeroVaultCTA = document.getElementById("btnHeroVaultCTA");
+      const btnBackToPublic = document.getElementById("btnBackToPublic");
+      const navLogo = document.getElementById("navLogo");
+
+      function switchToVaultView() {
+        publicView.classList.add("hidden");
+        vaultView.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function switchToPublicView() {
+        vaultView.classList.add("hidden");
+        publicView.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      btnOpenVaultView?.addEventListener("click", switchToVaultView);
+      btnHeroVaultCTA?.addEventListener("click", switchToVaultView);
+      btnBackToPublic?.addEventListener("click", switchToPublicView);
+      navLogo?.addEventListener("click", switchToPublicView);
+
+      // 상단 일반 앵커 클릭 시 공개 뷰로 복귀 후 해당 섹션으로 이동
+      ["navAbout", "navTech", "navContact"].forEach(id => {
+        document.getElementById(id)?.addEventListener("click", () => {
+          if (publicView.classList.contains("hidden")) {
+            switchToPublicView();
+          }
+        });
+      });
+
+      // 2. 테마 토글
       const themeToggle = document.getElementById("themeToggle");
       const body = document.body;
       const THEME_KEY = "preferred-theme";
@@ -640,7 +625,7 @@
         });
       }
 
-      // 2. 스크롤 페이드인
+      // 3. 스크롤 페이드인
       const fadeEls = document.querySelectorAll(".fade-in");
       if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver(
@@ -659,27 +644,7 @@
         fadeEls.forEach(function (el) { el.classList.add("visible"); });
       }
 
-      // 3. 네비게이션 활성 감지
-      const navLinks = document.querySelectorAll(".nav__links a");
-      const sections = document.querySelectorAll("main .section");
-      if ("IntersectionObserver" in window && sections.length > 0) {
-        const navObserver = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                const id = entry.target.getAttribute("id");
-                navLinks.forEach(function (link) {
-                  link.classList.toggle("active", link.getAttribute("href") === "#" + id);
-                });
-              }
-            });
-          },
-          { threshold: 0.2, rootMargin: "-60px 0px -40% 0px" }
-        );
-        sections.forEach(function (section) { navObserver.observe(section); });
-      }
-
-      // 4. Web Crypto 패스키 엔진
+      // 4. 패스키 암호화 엔진 (Web Crypto API)
       const STORAGE_PUBLIC_KEYS = "pds_passkey_server_keys_v1";
       const MEMORY_PRIVATE_KEYS = new Map();
       const USED_CHALLENGES = new Set();
