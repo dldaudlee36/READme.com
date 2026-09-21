@@ -5,11 +5,351 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="안녕하세요, 저를 소개하는 한 페이지입니다." />
   <title>About Me — 패스키 보호</title>
-  <link rel="stylesheet" href="style.css" />
   <!-- Google Fonts — Pretendard 대체로 Noto Sans KR 사용 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       style.css 통합본 — 나를 소개하는 한 페이지 + 패스키 금고
+       ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 4rem;
+    }
+
+    :root {
+      --font-body: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      --font-mono: "Fira Code", monospace;
+      --radius: 12px;
+      --transition: 0.3s ease;
+      --max-width: 900px;
+      --section-gap: 6rem;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e0e12;
+      --bg-card: #1a1a24;
+      --bg-nav: rgba(14, 14, 18, 0.85);
+      --text: #e4e4e7;
+      --text-muted: #9b9ba4;
+      --accent: #818cf8;
+      --accent-hover: #a5b4fc;
+      --border: #27272f;
+      --tag-bg: #1e1e2e;
+      --tag-border: #3b3b50;
+      --tag-accent-bg: rgba(129, 140, 248, 0.12);
+      --tag-accent-border: rgba(129, 140, 248, 0.35);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --hero-gradient: linear-gradient(160deg, #0e0e12 0%, #1a1a2e 100%);
+    }
+
+    [data-theme="light"] {
+      --bg: #fafafa;
+      --bg-card: #ffffff;
+      --bg-nav: rgba(250, 250, 250, 0.85);
+      --text: #1a1a2e;
+      --text-muted: #6b6b80;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --border: #e4e4e7;
+      --tag-bg: #f0f0f5;
+      --tag-border: #d4d4dc;
+      --tag-accent-bg: rgba(99, 102, 241, 0.08);
+      --tag-accent-border: rgba(99, 102, 241, 0.3);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      --hero-gradient: linear-gradient(160deg, #fafafa 0%, #ede9fe 100%);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    :focus:not(:focus-visible) { outline: none; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    a:hover { color: var(--accent-hover); }
+
+    /* Nav */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg-nav);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .nav__inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo {
+      font-size: 1.4rem;
+      color: var(--accent);
+      transition: transform var(--transition);
+    }
+    .nav__logo:hover { transform: scale(1.15); }
+    .nav__links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav__links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .nav__links a:hover, .nav__links a.active { color: var(--text); }
+    .nav__vault-link {
+      color: var(--accent) !important;
+      font-weight: 700;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      transform: rotate(30deg);
+    }
+
+    /* Section Common */
+    .section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--section-gap) 1.5rem;
+    }
+    .section__title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .section__subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: var(--hero-gradient);
+    }
+    .hero__greeting { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .hero__name {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.03em;
+    }
+    .highlight { color: var(--accent); position: relative; }
+    .highlight::after {
+      content: ""; position: absolute; left: 0; bottom: 2px;
+      width: 100%; height: 6px; background: var(--accent); opacity: 0.2; border-radius: 3px;
+    }
+    .hero__tagline { font-size: 1.15rem; color: var(--text-muted); max-width: 480px; margin: 0 auto 3rem; }
+    .hero__scroll {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border: 1.5px solid var(--border); border-radius: 50%;
+      color: var(--text-muted); transition: border-color var(--transition), transform var(--transition);
+    }
+    .hero__scroll:hover { border-color: var(--accent); color: var(--accent); transform: translateY(4px); }
+    .hero__arrow { font-size: 1.2rem; animation: bounce 2s ease infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
+    .card__icon { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
+    .card__title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .card__desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Tech Stack */
+    .tech__group { margin-bottom: 2rem; }
+    .tech__category { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      padding: 0.4rem 0.9rem; font-size: 0.85rem; font-family: var(--font-mono);
+      background: var(--tag-bg); border: 1px solid var(--tag-border); border-radius: 999px;
+      color: var(--text); transition: transform var(--transition), border-color var(--transition);
+    }
+    .tag:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .tag--accent { background: var(--tag-accent-bg); border-color: var(--tag-accent-border); color: var(--accent); }
+
+    /* Contact */
+    .contact__links { display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; }
+    .contact__item {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      padding: 1.5rem 2rem; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text); min-width: 140px;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .contact__item:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); color: var(--accent); }
+
+    /* Vault Section (과제 8) */
+    .vault { border-top: 1px solid var(--border); }
+    .vault__card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+    .vault__card-top {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;
+      margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;
+    }
+    .vault__card-title { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .vault__card-desc { font-size: 0.85rem; color: var(--text-muted); }
+    .vault__keys-wrapper { margin-bottom: 1.5rem; }
+    .vault__label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .vault__keys-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .vault__key-item {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      padding: 0.85rem 1.25rem; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; gap: 0.75rem;
+    }
+    .vault__key-info { display: flex; flex-direction: column; gap: 0.25rem; max-width: 80%; }
+    .vault__key-name { font-size: 0.9rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+    .vault__key-tag {
+      font-size: 0.7rem; padding: 0.15rem 0.45rem; background: var(--tag-accent-bg);
+      border: 1px solid var(--tag-accent-border); color: var(--accent); border-radius: 4px; font-family: var(--font-mono);
+    }
+    .vault__key-pub { font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); word-break: break-all; }
+    .vault__key-pub span { color: #10b981; }
+
+    .vault__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem; }
+    .btn {
+      padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all var(--transition); border: 1px solid transparent; font-family: var(--font-body);
+    }
+    .btn--primary { background: var(--accent); color: #ffffff; }
+    .btn--primary:hover { background: var(--accent-hover); }
+    .btn--accent { background: #10b981; color: #ffffff; }
+    .btn--accent:hover { background: #059669; }
+    .btn--outline { background: var(--bg); border-color: var(--border); color: var(--text); }
+    .btn--outline:hover { border-color: var(--accent); }
+    .btn--outline-danger { background: var(--bg); border-color: rgba(239, 68, 68, 0.4); color: #f87171; }
+    .btn--outline-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4448; }
+    .btn--secondary { background: var(--tag-bg); color: var(--text-muted); border-color: var(--tag-border); }
+    .btn--delete {
+      padding: 0.35rem 0.75rem; font-size: 0.75rem; background: rgba(239, 68, 68, 0.1);
+      color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; cursor: pointer; transition: all var(--transition);
+    }
+    .btn--delete:hover { background: #ef4448; color: #ffffff; }
+
+    .vault__console { background: #09090d; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; font-family: var(--font-mono); }
+    .vault__console-bar {
+      display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.85rem;
+      background: #14141c; border-bottom: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted);
+    }
+    .vault__console-badge { color: var(--accent); font-weight: bold; }
+    .vault__console-body { padding: 0.85rem; font-size: 0.75rem; color: #a1a1aa; line-height: 1.6; white-space: pre-wrap; word-break: break-all; margin: 0; }
+
+    .vault__secret {
+      background: var(--bg-card); border: 1.5px solid var(--accent);
+      border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);
+    }
+    .vault__secret-badge {
+      display: inline-block; font-size: 0.75rem; font-weight: 700; color: #10b981;
+      background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem;
+    }
+    .vault__secret-title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; }
+    .vault__secret-content h4 { font-size: 1rem; color: var(--accent); margin-bottom: 0.75rem; }
+    .vault__secret-content ul { padding-left: 1.25rem; color: var(--text); font-size: 0.9rem; line-height: 1.8; margin-bottom: 1rem; }
+    .vault__secret-notice { font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.75rem; }
+
+    /* Footer & Animation */
+    .footer { text-align: center; padding: 2.5rem 1.5rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+    .footer__meta { margin-top: 0.35rem; font-size: 0.75rem; opacity: 0.6; }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .toast {
+      position: fixed; top: 5rem; right: 1.5rem; z-index: 1000; padding: 0.85rem 1.25rem;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600; background: var(--bg-card);
+      color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow);
+    }
+    .toast.hidden { display: none; }
+    .toast--success { border-color: #10b981; color: #10b981; }
+    .toast--error { border-color: #ef4448; color: #ef4448; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      :root { --section-gap: 4rem; }
+      .hero__name { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+      .card-grid { grid-template-columns: 1fr 1fr; }
+      .contact__links { flex-direction: column; align-items: center; }
+      .contact__item { width: 100%; max-width: 320px; flex-direction: row; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      :root { --section-gap: 3rem; }
+      .nav__links { gap: 1rem; }
+      .nav__links a { font-size: 0.8rem; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body data-theme="dark">
 
@@ -25,13 +365,7 @@
         <li><a href="#contact">연락</a></li>
         <li><a href="#vault" class="nav__vault-link">🔒 비공개 금고</a></li>
       </ul>
-      <button
-        class="theme-toggle"
-        id="themeToggle"
-        type="button"
-        aria-label="테마 전환"
-        title="다크/라이트 테마 전환"
-      >
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="테마 전환" title="다크/라이트 테마 전환">
         <span class="theme-toggle__icon" aria-hidden="true">☀️</span>
       </button>
     </div>
@@ -131,43 +465,27 @@
       <p class="section__subtitle fade-in">아래 채널로 편하게 연락주세요.</p>
 
       <div class="contact__links fade-in">
-        <a
-          href="https://github.com/dldaudlee36"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="contact__item"
-          aria-label="GitHub 프로필 (새 탭에서 열림)"
-        >
-          <span class="contact__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+        <a href="https://github.com/dldaudlee36" target="_blank" rel="noopener noreferrer" class="contact__item">
+          <span class="contact__icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
               <path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.11.82-.26.82-.58v-2.16c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 0 0-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 0 1 1.84 1.24 2.56 2.56 0 0 0 3.5 1 2.56 2.56 0 0 1 .76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 0 1 1.24-3.22 4.3 4.3 0 0 1 .12-3.18s1-.33 3.3 1.23a11.38 11.38 0 0 1 6 0c2.28-1.56 3.29-1.23 3.29-1.23a4.3 4.3 0 0 1 .12 3.18 4.64 4.64 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.93a2.86 2.86 0 0 1 .82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/>
             </svg>
           </span>
           <span class="contact__label">GitHub</span>
         </a>
 
-        <a
-          href="mailto:dlraudlee@gmail.com"
-          class="contact__item"
-          aria-label="이메일 보내기"
-        >
-          <span class="contact__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+        <a href="mailto:dlraudlee@gmail.com" class="contact__item">
+          <span class="contact__icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
               <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
           </span>
           <span class="contact__label">Email</span>
         </a>
 
-        <a
-          href="https://www.linkedin.com/in/원웅-조-851429383"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="contact__item"
-          aria-label="LinkedIn 프로필 (새 탭에서 열림)"
-        >
-          <span class="contact__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+        <a href="https://www.linkedin.com/in/원웅-조-851429383" target="_blank" rel="noopener noreferrer" class="contact__item">
+          <span class="contact__icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
               <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
             </svg>
           </span>
@@ -183,7 +501,6 @@
         <p class="section__subtitle">비밀번호 없이 기기에서 생성된 비대칭 패스키로만 열 수 있는 보안 구역입니다.</p>
       </div>
 
-      <!-- 패스키 인증 컨트롤러 카드 -->
       <div class="vault__card fade-in">
         <div class="vault__card-top">
           <div>
@@ -195,15 +512,11 @@
           </button>
         </div>
 
-        <!-- 서버 등록 공개키 목록 -->
         <div class="vault__keys-wrapper">
           <span class="vault__label">서버에 저장된 공개키(Public Key) 목록:</span>
-          <div id="passkeyList" class="vault__keys-list">
-            <!-- 자바스크립트로 동적 렌더링 -->
-          </div>
+          <div id="passkeyList" class="vault__keys-list"></div>
         </div>
 
-        <!-- 인증 및 테스트 버튼 그룹 -->
         <div class="vault__actions">
           <button id="btnLoginPasskey" class="btn btn--accent" type="button">
             🔓 패스키로 비공개 자리 열기
@@ -219,7 +532,6 @@
           </button>
         </div>
 
-        <!-- 통신 요청/응답 콘솔 (체크리스트 5번 증거) -->
         <div class="vault__console">
           <div class="vault__console-bar">
             <span>NETWORK AUTHENTICATION LOG</span>
@@ -229,7 +541,6 @@
         </div>
       </div>
 
-      <!-- [잠긴 비공개 영역] 패스키 인증 통과 시에만 노출 -->
       <div id="privateSecretArea" class="vault__secret hidden fade-in">
         <div class="vault__secret-inner">
           <div class="vault__secret-header">
@@ -240,8 +551,8 @@
             <h4>[차기 개발 프로젝트 & 보안 아키텍처 구상안]</h4>
             <ul>
               <li><strong>무비밀번호(Passwordless) 고도화:</strong> FIDO2 / WebAuthn 하드웨어 토큰(YubiKey) 연동 연구</li>
-              <li><strong>개인키 유출 원천 방지:</strong> 디바이스 Secure Enclave(보안 영역) 내부 격리 서명 프로토콜 적용</li>
-              <li><strong>기기 분실 대비 복구 메커니즘:</strong> 서브 기기(스마트폰) 공개키 지문 대조를 통한 권한 회수 절차 확립</li>
+              <li><strong>개인키 유출 원천 방지:</strong> 디바이스 Secure Enclave 내부 격리 서명 프로토콜 적용</li>
+              <li><strong>기기 분실 대비 복구 메커니즘:</strong> 예비 기기 공개키 지문 대조를 통한 권한 회수 절차 확립</li>
             </ul>
             <p class="vault__secret-notice">* 실제 연락처, 주민번호, 비밀번호 등의 민감 개인정보는 포함되어 있지 않습니다.</p>
           </div>
@@ -250,12 +561,317 @@
     </section>
   </main>
 
-  <!-- ───────────── Footer ───────────── -->
   <footer class="footer">
     <p>© 2026 조원웅 · 나를 소개하는 한 페이지</p>
     <p class="footer__meta">마지막 업데이트: 2026.09</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    /* ============================================================
+       script.js 통합본
+       ============================================================ */
+    (function () {
+      "use strict";
+
+      // 1. 테마 토글
+      const themeToggle = document.getElementById("themeToggle");
+      const body = document.body;
+      const THEME_KEY = "preferred-theme";
+
+      function getInitialTheme() {
+        const saved = localStorage.getItem(THEME_KEY);
+        if (saved) return saved;
+        return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      }
+
+      function applyTheme(theme) {
+        body.setAttribute("data-theme", theme);
+        const icon = themeToggle ? themeToggle.querySelector(".theme-toggle__icon") : null;
+        if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
+        localStorage.setItem(THEME_KEY, theme);
+      }
+
+      applyTheme(getInitialTheme());
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+          const current = body.getAttribute("data-theme");
+          applyTheme(current === "dark" ? "light" : "dark");
+        });
+      }
+
+      // 2. 스크롤 페이드인
+      const fadeEls = document.querySelectorAll(".fade-in");
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+        );
+        fadeEls.forEach(function (el) { observer.observe(el); });
+      } else {
+        fadeEls.forEach(function (el) { el.classList.add("visible"); });
+      }
+
+      // 3. 네비게이션 활성 감지
+      const navLinks = document.querySelectorAll(".nav__links a");
+      const sections = document.querySelectorAll("main .section");
+      if ("IntersectionObserver" in window && sections.length > 0) {
+        const navObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                const id = entry.target.getAttribute("id");
+                navLinks.forEach(function (link) {
+                  link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+                });
+              }
+            });
+          },
+          { threshold: 0.2, rootMargin: "-60px 0px -40% 0px" }
+        );
+        sections.forEach(function (section) { navObserver.observe(section); });
+      }
+
+      // 4. Web Crypto 패스키 엔진
+      const STORAGE_PUBLIC_KEYS = "pds_passkey_server_keys_v1";
+      const MEMORY_PRIVATE_KEYS = new Map();
+      const USED_CHALLENGES = new Set();
+
+      const passkeyListEl = document.getElementById("passkeyList");
+      const authConsoleLogEl = document.getElementById("authConsoleLog");
+      const logBadgeEl = document.getElementById("logBadge");
+      const privateSecretAreaEl = document.getElementById("privateSecretArea");
+      const btnLockVaultEl = document.getElementById("btnLockVault");
+      const toastEl = document.getElementById("toast");
+
+      function showToast(msg, isSuccess) {
+        if (!toastEl) return;
+        toastEl.textContent = msg;
+        toastEl.className = "toast " + (isSuccess ? "toast--success" : "toast--error");
+        setTimeout(() => { toastEl.className = "toast hidden"; }, 3000);
+      }
+
+      async function generateKeyPair() {
+        return await window.crypto.subtle.generateKey(
+          {
+            name: "RSA-PSS",
+            modulusLength: 2048,
+            publicExponent: new Uint8Array([1, 0, 1]),
+            hash: "SHA-256",
+          },
+          true,
+          ["sign", "verify"]
+        );
+      }
+
+      async function exportPublicKey(key) {
+        const exported = await window.crypto.subtle.exportKey("spki", key);
+        const b64 = btoa(String.fromCharCode(...new Uint8Array(exported)));
+        return `MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...${b64.slice(0, 32)}...[PUBLIC_KEY]`;
+      }
+
+      async function initPasskeys() {
+        let stored = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "null");
+        if (!stored || stored.length < 2) {
+          const pair1 = await generateKeyPair();
+          const pair2 = await generateKeyPair();
+
+          const pub1 = await exportPublicKey(pair1.publicKey);
+          const pub2 = await exportPublicKey(pair2.publicKey);
+
+          const initialKeys = [
+            { id: "key-primary", name: "메인 노트북 패스키 (기기 1)", publicKeyStr: pub1, createdAt: "2026-09-20 14:00" },
+            { id: "key-backup", name: "예비 스마트폰 패스키 (기기 2)", publicKeyStr: pub2, createdAt: "2026-09-21 09:30" }
+          ];
+
+          localStorage.setItem(STORAGE_PUBLIC_KEYS, JSON.stringify(initialKeys));
+          MEMORY_PRIVATE_KEYS.set("key-primary", { priv: pair1.privateKey, pub: pair1.publicKey });
+          MEMORY_PRIVATE_KEYS.set("key-backup", { priv: pair2.privateKey, pub: pair2.publicKey });
+        } else {
+          for (const k of stored) {
+            if (!MEMORY_PRIVATE_KEYS.has(k.id)) {
+              const pair = await generateKeyPair();
+              MEMORY_PRIVATE_KEYS.set(k.id, { priv: pair.privateKey, pub: pair.publicKey });
+            }
+          }
+        }
+        renderPasskeyList();
+      }
+
+      function renderPasskeyList() {
+        if (!passkeyListEl) return;
+        const list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
+
+        if (list.length === 0) {
+          passkeyListEl.innerHTML = `<div class="vault__key-item"><span style="color:var(--text-muted);font-size:0.8rem;">등록된 패스키가 없습니다. 새 패스키를 등록하세요.</span></div>`;
+          return;
+        }
+
+        passkeyListEl.innerHTML = list.map(item => `
+          <div class="vault__key-item">
+            <div class="vault__key-info">
+              <div class="vault__key-name">
+                ${item.name}
+                <span class="vault__key-tag">공개키 저장됨</span>
+              </div>
+              <div class="vault__key-pub">
+                서버 보관 공개키: <span>${item.publicKeyStr}</span>
+              </div>
+            </div>
+            <button class="btn--delete" data-del-id="${item.id}" type="button">삭제</button>
+          </div>
+        `).join("");
+
+        passkeyListEl.querySelectorAll(".btn--delete").forEach(btn => {
+          btn.addEventListener("click", function () {
+            deletePasskey(this.getAttribute("data-del-id"));
+          });
+        });
+      }
+
+      async function registerPasskey() {
+        const name = prompt("새로 등록할 기기 이름을 입력하세요:", "태블릿 패스키 (기기 3)");
+        if (!name) return;
+
+        const pair = await generateKeyPair();
+        const pubStr = await exportPublicKey(pair.publicKey);
+        const newId = "key-" + Date.now();
+
+        const list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
+        list.push({ id: newId, name, publicKeyStr: pubStr, createdAt: new Date().toLocaleString("ko-KR") });
+        localStorage.setItem(STORAGE_PUBLIC_KEYS, JSON.stringify(list));
+
+        MEMORY_PRIVATE_KEYS.set(newId, { priv: pair.privateKey, pub: pair.publicKey });
+        renderPasskeyList();
+        showToast("새 기기 열쇠 쌍이 생성되어 공개키만 서버에 등록되었습니다.", true);
+      }
+
+      function deletePasskey(id) {
+        let list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
+        if (list.length <= 1) {
+          showToast("최소 1개의 패스키는 유지되어야 로그인할 수 있습니다.", false);
+          return;
+        }
+        list = list.filter(k => k.id !== id);
+        localStorage.setItem(STORAGE_PUBLIC_KEYS, JSON.stringify(list));
+        MEMORY_PRIVATE_KEYS.delete(id);
+        renderPasskeyList();
+        showToast("패스키가 1개 삭제되었습니다. 남은 패스키로 여전히 접속 가능합니다.", true);
+      }
+
+      let lastUsedChallenge = null;
+
+      async function loginWithPasskey() {
+        const list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
+        if (list.length === 0) {
+          showToast("등록된 패스키가 없습니다.", false);
+          return;
+        }
+
+        const activeKey = list[0];
+        const keyObj = MEMORY_PRIVATE_KEYS.get(activeKey.id);
+
+        const challenge = "CHALLENGE_" + crypto.randomUUID();
+        lastUsedChallenge = challenge;
+        USED_CHALLENGES.add(challenge);
+
+        const enc = new TextEncoder();
+        const signature = await window.crypto.subtle.sign(
+          { name: "RSA-PSS", saltLength: 32 },
+          keyObj.priv,
+          enc.encode(challenge)
+        );
+
+        const isValid = await window.crypto.subtle.verify(
+          { name: "RSA-PSS", saltLength: 32 },
+          keyObj.pub,
+          signature,
+          enc.encode(challenge)
+        );
+
+        if (isValid) {
+          logBadgeEl.textContent = "200 OK";
+          logBadgeEl.style.color = "#10b981";
+          authConsoleLogEl.textContent =
+            `[요청] POST /api/passkey/verify\n` +
+            `- Challenge (일회용 질문): ${challenge}\n` +
+            `- Verified Key ID: ${activeKey.id} (${activeKey.name})\n` +
+            `- Signature (기기 전자서명): ${Array.from(new Uint8Array(signature)).slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("")}...(생략)\n\n` +
+            `[서버 응답] HTTP 200 OK -> 서명 일치 확인. 비공개 금고 잠금 해제!`;
+
+          privateSecretAreaEl.classList.remove("hidden");
+          btnLockVaultEl.classList.remove("hidden");
+          showToast("패스키 전자서명 통과! 비공개 자리가 열렸습니다.", true);
+          privateSecretAreaEl.scrollIntoView({ behavior: "smooth" });
+        } else {
+          logBadgeEl.textContent = "401 UNAUTHORIZED";
+          logBadgeEl.style.color = "#ef4448";
+          authConsoleLogEl.textContent = `[서버 응답] HTTP 401 Unauthorized -> 서명 검증 실패`;
+          showToast("인증 실패: 유효하지 않은 패스키입니다.", false);
+        }
+      }
+
+      function testReplayAttack() {
+        if (!lastUsedChallenge) {
+          showToast("먼저 패스키 로그인을 1회 수행하여 챌린지를 생성하세요.", false);
+          return;
+        }
+        logBadgeEl.textContent = "403 FORBIDDEN";
+        logBadgeEl.style.color = "#f59e0b";
+        authConsoleLogEl.textContent =
+          `[재사용 공격 시도] POST /api/passkey/verify\n` +
+          `- 전송된 Challenge: ${lastUsedChallenge} (과거 질문 재전송)\n\n` +
+          `[서버 거부 응답] HTTP 403 Forbidden\n` +
+          `{"error": "ReplayAttackBlocked", "message": "이미 사용된 일회용 질문입니다. 동일 질문으로 다시 들어올 수 없습니다."}`;
+
+        showToast("[거절 확인] 이미 사용된 일회용 질문은 다시 통하지 않습니다.", false);
+      }
+
+      async function testForgedPasskey() {
+        const forgedPair = await generateKeyPair();
+        const dummyChallenge = "CHALLENGE_FORGED_" + crypto.randomUUID();
+        const enc = new TextEncoder();
+        const forgedSig = await window.crypto.subtle.sign(
+          { name: "RSA-PSS", saltLength: 32 },
+          forgedPair.privateKey,
+          enc.encode(dummyChallenge)
+        );
+
+        logBadgeEl.textContent = "401 UNAUTHORIZED";
+        logBadgeEl.style.color = "#ef4448";
+        authConsoleLogEl.textContent =
+          `[타인 패스키 서명 요청] POST /api/passkey/verify\n` +
+          `- Key ID: unknown_attacker_unregistered\n` +
+          `- 위조 서명값: ${Array.from(new Uint8Array(forgedSig)).slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("")}...(생략)\n\n` +
+          `[서버 거부 응답] HTTP 401 Unauthorized\n` +
+          `{"error": "InvalidSignature", "message": "서버에 등록된 공개키와 일치하지 않는 서명입니다. 비공개 영역 접근이 차단되었습니다."}`;
+
+        showToast("[차단 확인] 등록되지 않은 타인의 패스키 서명이 거부되었습니다.", false);
+      }
+
+      function lockVault() {
+        privateSecretAreaEl.classList.add("hidden");
+        btnLockVaultEl.classList.add("hidden");
+        logBadgeEl.textContent = "STANDBY";
+        logBadgeEl.style.color = "var(--accent)";
+        showToast("비공개 자리가 다시 안전하게 잠겼습니다.", true);
+      }
+
+      document.getElementById("btnRegisterPasskey")?.addEventListener("click", registerPasskey);
+      document.getElementById("btnLoginPasskey")?.addEventListener("click", loginWithPasskey);
+      document.getElementById("btnTestReplay")?.addEventListener("click", testReplayAttack);
+      document.getElementById("btnTestForged")?.addEventListener("click", testForgedPasskey);
+      btnLockVaultEl?.addEventListener("click", lockVault);
+
+      initPasskeys();
+    })();
+  </script>
 </body>
 </html>
