@@ -510,30 +510,55 @@
     </div>
 
     <!-- [2] 잠금 해제 상태: 비공개 메모 본문 -->
+    <!-- [2] 잠금 해제 상태: 친근한 입문자용 비공개 메모 본문 -->
     <div id="unlockedContent" class="secret-paper hidden">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
         <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">
-          ✓ PASSKEY VERIFIED
+          ✓ 패스키로 열림
         </span>
         <button id="btnLockVault" class="btn--back" style="font-size: 0.75rem;" type="button">
           다시 잠그기
         </button>
       </div>
 
-      <h3>[비공개 작업 노트: 차기 연구 및 아이디어]</h3>
+      <h3>📝 나만 보는 비밀 스터디 메모</h3>
       <p>
-        외부에 공개하지 않는 개인적인 보안 아키텍처 구상안과 스터디 메모입니다.
+        남들에게 보여주기엔 아직 서툴지만, 혼자 조용히 정리해두는 공부 기록과 생각들입니다.
       </p>
-      <ul>
-        <li><strong>FIDO2 / WebAuthn 하드웨어 토큰 연동:</strong> YubiKey 및 브라우저 네이티브 암호화 엔진 통합 연구</li>
-        <li><strong>Secure Enclave 격리:</strong> 개인키가 디바이스 외부로 단 1비트도 유출되지 않는 구조적 무결성 검증</li>
-        <li><strong>기기 분실 복구 시나리오:</strong> 메인 PC 분실 시 예비 기기(모바일)의 공개키 대조를 통한 권한 회수 절차</li>
-      </ul>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+          <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+            1. 비밀번호 없이 로그인하는 거 신기하다
+          </strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
+            매번 사이트마다 비밀번호 다르게 만들기 귀찮고 까먹기 일쑤였는데, 내 기기에서 열쇠를 만들어서 확인하니까 훨씬 편하다. 원리를 조금 더 파고들어 보고 싶다.
+          </span>
+        </div>
+
+        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+          <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+            2. 요즘 읽는 네트워크 책 & 공부 목표
+          </strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
+            와이어샤크로 패킷 주고받는 거 직접 뜯어보는 중인데 신기하면서도 머리 아프다. 3-way 핸드셰이크 흐름 확실하게 이해하고 블로그에 정리해보기.
+          </span>
+        </div>
+
+        <div style="background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+          <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+            3. 이번 주 운동 목표
+          </strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
+            주말 농구 연습 때 발목 테이핑 잊지 말고 꼭 하기. 스팟업 슛 연습 100개 던지고 오기.
+          </span>
+        </div>
+      </div>
+
       <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.75rem;">
-        * 실제 주민등록번호나 계정 비밀번호 등의 민감정보는 포함하지 않습니다.
+        * 실제 주민번호, 진짜 비밀번호 같은 민감한 개인정보는 적지 않았습니다.
       </div>
     </div>
-  </section>
 
   <!-- Footer -->
   <footer class="footer">
