@@ -294,56 +294,35 @@
        ============================================================ -->
   <main id="publicView">
     <!-- Hero 섹션 -->
-    <!-- ───────────── Hero 섹션 ───────────── -->
+    <!-- ───────────── Hero 섹션 (군더더기 및 카드 완전 삭제) ───────────── -->
     <section id="hero" class="hero section" style="position: relative;">
       
-      <!-- 수정 버튼: 네비게이션 아래로 안전하게 위치 조정 (top: 5.5rem) -->
+      <!-- 소개글 수정 버튼 (패스키 본인인증 연동) -->
       <button id="btnEditPublicProfile" type="button" title="패스키 인증 후 프로필 문구 수정"
         style="position: absolute; top: 5.5rem; right: 1.5rem; z-index: 20; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 600; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--accent); color: var(--accent); cursor: pointer; box-shadow: var(--shadow);">
         <span>✏️</span> 소개글 수정
       </button>
 
-      <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; padding-top: 2rem;">
+      <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding-top: 3rem;">
         
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--tag-accent-bg); border: 1px solid var(--tag-accent-border); font-size: 0.8rem; color: var(--accent); font-family: var(--font-mono);">
-          <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
-          보안과 자동화 기술을 탐구하는 주니어 엔지니어
-        </div>
-
         <div>
-          <p class="hero__greeting" style="margin-bottom: 0.25rem;">안녕하세요 👋</p>
-          <h1 class="hero__name" style="margin-bottom: 0.5rem;">
+          <p class="hero__greeting" style="margin-bottom: 0.5rem;">안녕하세요 👋</p>
+          <h1 class="hero__name" style="margin-bottom: 0.75rem;">
             저는 <span class="highlight">조원웅</span>입니다
           </h1>
           <!-- 수정 가능한 메인 소개글 태그라인 -->
           <div id="heroTaglineBox">
-            <p id="heroTaglineText" class="hero__tagline" style="margin: 0 auto; max-width: 520px; font-size: 1.05rem; line-height: 1.6;">
-              네트워크 패킷 흐름과 브라우저 보안 아키텍처를 깊이 파고들며,<br />
-              복잡한 시스템 문제를 가볍고 안전한 코드로 풀어냅니다.
+            <p id="heroTaglineText" class="hero__tagline" style="margin: 0 auto; max-width: 520px; font-size: 1.15rem; line-height: 1.6;">
+              컴퓨터에 관심이 많은 취준생입니다.
             </p>
           </div>
           <!-- 패스키 인증 성공 시 나타나는 편집 폼 -->
           <div id="heroTaglineEditForm" class="hidden" style="margin-top: 1rem; width: 100%; max-width: 520px;">
-            <textarea id="heroTaglineInput" class="edit-textarea" style="width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; color: var(--text); font-family: var(--font-body); font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-top: 0.5rem;"></textarea>
+            <textarea id="heroTaglineInput" class="edit-textarea" style="width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; color: var(--text); font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6; resize: vertical; margin-top: 0.5rem;"></textarea>
             <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
               <button id="btnCancelPublicEdit" class="btn--mini" type="button">취소</button>
               <button id="btnSavePublicEdit" class="btn--mini" style="background: var(--accent); color: #fff; border-color: var(--accent);" type="button">수정 완료 저장</button>
             </div>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; margin-top: 0.5rem;">
-          <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius); text-align: center;">
-            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-family: var(--font-mono);">FOCUS</span>
-            <strong style="font-size: 0.95rem; color: var(--text); margin-top: 0.25rem; display: block;">네트워크 & 보안</strong>
-          </div>
-          <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius); text-align: center;">
-            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-family: var(--font-mono);">ENGINE</span>
-            <strong style="font-size: 0.95rem; color: var(--text); margin-top: 0.25rem; display: block;">Web Crypto API</strong>
-          </div>
-          <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius); text-align: center;">
-            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-family: var(--font-mono);">SECURITY</span>
-            <strong style="font-size: 0.95rem; color: #10b981; margin-top: 0.25rem; display: block;">패스키 (FIDO2)</strong>
           </div>
         </div>
 
@@ -356,7 +335,7 @@
           </a>
         </div>
 
-        <a href="#about" class="hero__scroll" aria-label="아래로 스크롤" style="margin-top: 1rem;">
+        <a href="#about" class="hero__scroll" aria-label="아래로 스크롤" style="margin-top: 2rem;">
           <span class="hero__arrow" aria-hidden="true">↓</span>
         </a>
       </div>
