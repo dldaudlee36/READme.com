@@ -11,18 +11,12 @@
 
   <style>
     /* ============================================================
-       style.css — 포트폴리오 일체형 미니멀 디자인
+       style.css — 조원웅 개인 프로필 & 패스키 잠금 시스템
        ============================================================ */
     *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      margin: 0; padding: 0; box-sizing: border-box;
     }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 4rem;
-    }
+    html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
 
     :root {
       --font-body: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
@@ -94,16 +88,15 @@
     }
     .nav__logo { font-size: 1.4rem; color: var(--accent); transition: transform var(--transition); cursor: pointer; }
     .nav__logo:hover { transform: scale(1.15); }
-    .nav__links { list-style: none; display: flex; gap: 1.5rem; align-items: center; }
+    .nav__links { list-style: none; display: flex; gap: 1.25rem; align-items: center; }
     .nav__links a, .nav__links button {
       font-size: 0.9rem; font-weight: 500; color: var(--text-muted); background: none; border: none; cursor: pointer;
       font-family: var(--font-body);
     }
-    .nav__links a:hover, .nav__links button:hover, .nav__links a.active { color: var(--text); }
+    .nav__links a:hover, .nav__links button:hover { color: var(--text); }
     
-    /* 과제 티를 벗겨낸 자연스러운 오너 메뉴 버튼 */
     .nav__owner-btn {
-      display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem;
+      display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem;
       border-radius: 6px; background: var(--tag-bg) !important;
       border: 1px solid var(--border) !important; color: var(--text) !important; font-weight: 500 !important;
       transition: all var(--transition);
@@ -125,7 +118,7 @@
     /* Hero */
     .hero {
       min-height: 90vh; display: flex; align-items: center; justify-content: center;
-      text-align: center; background: var(--hero-gradient);
+      text-align: center; background: var(--hero-gradient); position: relative;
     }
     .hero__name { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.03em; }
     .highlight { color: var(--accent); position: relative; }
@@ -141,6 +134,15 @@
     .hero__scroll:hover { border-color: var(--accent); color: var(--accent); transform: translateY(4px); }
     .hero__arrow { font-size: 1.2rem; animation: bounce 2s ease infinite; }
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* 모퉁이 수정 버튼 (Corner Edit Button) */
+    .corner-edit-btn {
+      position: absolute; top: 1.5rem; right: 1.5rem; display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600; border-radius: 6px;
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
+      cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow); z-index: 10;
+    }
+    .corner-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
 
     /* Card Grid */
     .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
@@ -175,7 +177,7 @@
     }
     .contact__item:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent); color: var(--accent); }
 
-    /* ── [자연스러운 개인 작업실 뷰] ─────────────────────────── */
+    /* ── [비공개 뷰 스타일] ─────────────────────────── */
     #privateView {
       min-height: 85vh; padding-top: 6rem; padding-bottom: 5rem;
       max-width: 720px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem;
@@ -187,7 +189,6 @@
     }
     .btn--back:hover { border-color: var(--accent); color: var(--text); }
 
-    /* 심플 잠금 화면 카드 */
     .lock-card {
       background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
       padding: 2.5rem 2rem; text-align: center; margin-top: 1.5rem; box-shadow: var(--shadow);
@@ -207,10 +208,7 @@
     .btn--outline { background: var(--bg); border-color: var(--border); color: var(--text); }
     .btn--outline:hover { border-color: var(--accent); }
 
-    /* 등록된 기기 칩 */
-    .device-list {
-      display: flex; flex-direction: column; gap: 0.5rem; margin: 1.5rem 0; text-align: left;
-    }
+    .device-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1.5rem 0; text-align: left; }
     .device-item {
       display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 1rem;
       background: var(--bg); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem;
@@ -220,23 +218,25 @@
     }
     .btn--delete-text:hover { text-decoration: underline; }
 
-    /* 잠금 해제된 개인 노트 본문 */
+    /* 비공개 메모 본문 */
     .secret-paper {
       background: var(--bg-card); border: 1px solid var(--accent); border-radius: var(--radius);
       padding: 2.5rem 2rem; margin-top: 1.5rem; box-shadow: var(--shadow);
     }
     .secret-paper h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--text); }
     .secret-paper p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
-    .secret-paper ul { padding-left: 1.25rem; color: var(--text); font-size: 0.9rem; line-height: 1.8; }
 
-    /* 평가 채점관을 위한 숨은 세부정보 (Details / Accordion) */
-    .audit-details {
-      margin-top: 2rem; border-top: 1px dashed var(--border); padding-top: 1.5rem; text-align: left;
+    /* 편집 폼 인라인 */
+    .edit-textarea {
+      width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem; color: var(--text); font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-top: 0.5rem;
     }
-    .audit-details summary {
-      font-size: 0.8rem; color: var(--text-muted); cursor: pointer; user-select: none; font-family: var(--font-mono);
-    }
-    .audit-details summary:hover { color: var(--accent); }
+    .edit-textarea:focus { outline: 2px solid var(--accent); }
+
+    /* 평가 채점관 전용 접이식 */
+    .audit-details { margin-top: 2rem; border-top: 1px dashed var(--border); padding-top: 1.5rem; text-align: left; }
+    .audit-details summary { font-size: 0.8rem; color: var(--text-muted); cursor: pointer; font-family: var(--font-mono); }
     .audit-box {
       margin-top: 1rem; padding: 1rem; background: #09090d; border: 1px solid var(--border);
       border-radius: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: #a1a1aa; line-height: 1.6;
@@ -263,14 +263,6 @@
     .toast--success { border-color: #10b981; color: #10b981; }
     .toast--error { border-color: #ef4448; color: #ef4448; }
     .hidden { display: none !important; }
-
-    @media (max-width: 768px) {
-      :root { --section-gap: 3.5rem; }
-      .hero__name { font-size: clamp(1.6rem, 6vw, 2.4rem); }
-      .card-grid { grid-template-columns: 1fr 1fr; }
-      .contact__links { flex-direction: column; align-items: center; }
-      .contact__item { width: 100%; max-width: 320px; flex-direction: row; justify-content: center; }
-    }
   </style>
 </head>
 <body data-theme="dark">
@@ -285,7 +277,6 @@
         <li><a href="#about" id="navAbout">소개</a></li>
         <li><a href="#tech" id="navTech">기술</a></li>
         <li><a href="#contact" id="navContact">연락처</a></li>
-        <!-- 과제 냄새를 뺀 자연스러운 비공개 진입 메뉴 -->
         <li>
           <button id="btnOpenPrivateView" class="nav__owner-btn" type="button" title="작성자 전용 비공개 공간">
             🔒 비공개 메모
@@ -299,11 +290,16 @@
   </nav>
 
   <!-- ============================================================
-       [공개 뷰] 자연스러운 개발자 포트폴리오
+       [공개 뷰] 포트폴리오 (우측 상단 코너에 패스키 수정 버튼 장착)
        ============================================================ -->
   <main id="publicView">
     <!-- Hero 섹션 -->
     <section id="hero" class="hero section">
+      <!-- [요구사항 1] 공개 소개글 코너 수정 버튼 -->
+      <button id="btnEditPublicProfile" class="corner-edit-btn" type="button" title="패스키 인증 후 프로필 문구 수정">
+        <span>✏️</span> 소개글 수정
+      </button>
+
       <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
         
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--tag-accent-bg); border: 1px solid var(--tag-accent-border); font-size: 0.8rem; color: var(--accent); font-family: var(--font-mono);">
@@ -316,10 +312,21 @@
           <h1 class="hero__name" style="margin-bottom: 0.5rem;">
             저는 <span class="highlight">조원웅</span>입니다
           </h1>
-          <p class="hero__tagline" style="margin: 0 auto; max-width: 520px; font-size: 1.05rem; line-height: 1.6;">
-            네트워크 패킷 흐름과 브라우저 보안 아키텍처를 깊이 파고들며,<br />
-            복잡한 시스템 문제를 가볍고 안전한 코드로 풀어냅니다.
-          </p>
+          <!-- 수정 가능한 메인 소개글 태그라인 -->
+          <div id="heroTaglineBox">
+            <p id="heroTaglineText" class="hero__tagline" style="margin: 0 auto; max-width: 520px; font-size: 1.05rem; line-height: 1.6;">
+              네트워크 패킷 흐름과 브라우저 보안 아키텍처를 깊이 파고들며,<br />
+              복잡한 시스템 문제를 가볍고 안전한 코드로 풀어냅니다.
+            </p>
+          </div>
+          <!-- 패스키 인증 성공 시 나타나는 편집 폼 -->
+          <div id="heroTaglineEditForm" class="hidden" style="margin-top: 1rem; width: 100%; max-width: 520px;">
+            <textarea id="heroTaglineInput" class="edit-textarea"></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+              <button id="btnCancelPublicEdit" class="btn--mini" type="button">취소</button>
+              <button id="btnSavePublicEdit" class="btn--mini" style="background: var(--accent); color: #fff; border-color: var(--accent);" type="button">수정 완료 저장</button>
+            </div>
+          </div>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; margin-top: 0.5rem;">
@@ -363,25 +370,21 @@
           <h3 class="card__title">음악 감상</h3>
           <p class="card__desc">장르를 가리지 않고 듣습니다. 공부할 때는 R&B를 즐겨 틀어요.</p>
         </article>
-
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">📚</span>
           <h3 class="card__title">독서</h3>
           <p class="card__desc">천문학이나 역사 관련 전문 서적과 추리/스릴러 소설을 좋아합니다. 최근에는 네트워크 보안 관련 책을 읽고 있어요.</p>
         </article>
-
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">🏀</span>
           <h3 class="card__title">농구</h3>
           <p class="card__desc">대학교 다닐 때부터 농구 동아리와 동호회 활동을 꾸준히 하고 있어요. 주로 2, 3번 봅니다. 4번도 가끔 봐요.</p>
         </article>
-
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">🎮</span>
           <h3 class="card__title">게임</h3>
           <p class="card__desc">퍼즐 게임을 좋아합니다. 문제 해결 과정이 재밌어요.</p>
         </article>
-
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">☕</span>
           <h3 class="card__title">카페 탐방</h3>
@@ -460,7 +463,7 @@
   </main>
 
   <!-- ============================================================
-       [비공개 뷰] 자연스러운 개인 작업 노트 (미니멀 잠금 화면)
+       [비공개 뷰] 친근한 개인 메모 (수정 버튼 장착)
        ============================================================ -->
   <section id="privateView" class="hidden">
     <div style="margin-bottom: 1.5rem;">
@@ -469,22 +472,21 @@
       </button>
     </div>
 
-    <!-- [1] 잠금 상태: 패스키 로그인 카드 -->
+    <!-- 잠금 상태: 패스키 로그인 카드 -->
     <div id="lockCard" class="lock-card">
       <div class="lock-icon-circle">🔑</div>
       <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">작성자 전용 비공개 공간</h2>
       <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 420px; margin: 0 auto 1.5rem;">
-        비밀번호 없이 등록된 기기의 생체/패스키 전자서명으로 안전하게 열람합니다.
+        비밀번호 없이 기기 패스키 전자서명으로 안전하게 본인인증 후 열람합니다.
       </p>
 
-      <!-- 인증 버튼 -->
       <div>
         <button id="btnLoginPasskey" class="btn btn--primary" type="button">
           기기 패스키로 잠금 해제
         </button>
       </div>
 
-      <!-- 등록된 기기 목록 (체크리스트 2번, 4번 대응) -->
+      <!-- 등록된 기기 목록 (모바일 패스키를 직접 삭제할 수 있도록 지원) -->
       <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.25rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
           <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">등록된 패스키 기기</span>
@@ -495,7 +497,7 @@
         <div id="deviceList" class="device-list"></div>
       </div>
 
-      <!-- [심사관 전용 증거 섹션 - 접이식으로 숨겨 포트폴리오를 해치지 않음] -->
+      <!-- 심사관용 접이식 검증 섹션 -->
       <details class="audit-details">
         <summary>🛠️ 심사관용 보안 검증 로그 및 거절 테스트 보기 (Click)</summary>
         <div class="audit-box">
@@ -509,16 +511,21 @@
       </details>
     </div>
 
-    <!-- [2] 잠금 해제 상태: 비공개 메모 본문 -->
-    <!-- [2] 잠금 해제 상태: 친근한 입문자용 비공개 메모 본문 -->
+    <!-- 잠금 해제 상태: 비공개 메모 본문 (수정 버튼 장착) -->
     <div id="unlockedContent" class="secret-paper hidden">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
         <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">
           ✓ 패스키로 열림
         </span>
-        <button id="btnLockVault" class="btn--back" style="font-size: 0.75rem;" type="button">
-          다시 잠그기
-        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <!-- [요구사항 3] 비공개 메모 수정 버튼 -->
+          <button id="btnEditPrivateNote" class="btn--mini" style="background: var(--tag-bg); color: var(--accent);" type="button">
+            ✏️ 메모 수정
+          </button>
+          <button id="btnLockVault" class="btn--back" style="font-size: 0.75rem;" type="button">
+            다시 잠그기
+          </button>
+        </div>
       </div>
 
       <h3>📝 나만 보는 비밀 스터디 메모</h3>
@@ -526,12 +533,13 @@
         남들에게 보여주기엔 아직 서툴지만, 혼자 조용히 정리해두는 공부 기록과 생각들입니다.
       </p>
       
-      <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+      <!-- 메모 본문 영역 -->
+      <div id="privateNoteDisplay" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
         <div style="background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
           <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
             1. 비밀번호 없이 로그인하는 거 신기하다
           </strong>
-          <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
+          <span id="noteItem1" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
             매번 사이트마다 비밀번호 다르게 만들기 귀찮고 까먹기 일쑤였는데, 내 기기에서 열쇠를 만들어서 확인하니까 훨씬 편하다. 원리를 조금 더 파고들어 보고 싶다.
           </span>
         </div>
@@ -540,7 +548,7 @@
           <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
             2. 요즘 읽는 네트워크 책 & 공부 목표
           </strong>
-          <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
+          <span id="noteItem2" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
             와이어샤크로 패킷 주고받는 거 직접 뜯어보는 중인데 신기하면서도 머리 아프다. 3-way 핸드셰이크 흐름 확실하게 이해하고 블로그에 정리해보기.
           </span>
         </div>
@@ -549,9 +557,26 @@
           <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
             3. 이번 주 운동 목표
           </strong>
-          <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
+          <span id="noteItem3" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: block;">
             주말 농구 연습 때 발목 테이핑 잊지 말고 꼭 하기. 스팟업 슛 연습 100개 던지고 오기.
           </span>
+        </div>
+      </div>
+
+      <!-- 메모 편집 폼 -->
+      <div id="privateNoteEditForm" class="hidden" style="margin-top: 1rem;">
+        <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">1번 메모 내용</label>
+        <textarea id="editInputNote1" class="edit-textarea"></textarea>
+
+        <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.75rem; margin-bottom: 0.25rem;">2번 메모 내용</label>
+        <textarea id="editInputNote2" class="edit-textarea"></textarea>
+
+        <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.75rem; margin-bottom: 0.25rem;">3번 메모 내용</label>
+        <textarea id="editInputNote3" class="edit-textarea"></textarea>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+          <button id="btnCancelPrivateEdit" class="btn--mini" type="button">취소</button>
+          <button id="btnSavePrivateEdit" class="btn--mini" style="background: var(--accent); color: #fff; border-color: var(--accent);" type="button">메모 저장</button>
         </div>
       </div>
 
@@ -559,6 +584,7 @@
         * 실제 주민번호, 진짜 비밀번호 같은 민감한 개인정보는 적지 않았습니다.
       </div>
     </div>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -568,18 +594,61 @@
 
   <script>
     /* ============================================================
-       script.js — SPA 라우팅 + Web Crypto 패스키 보안 엔진
+       script.js — 패스키 본인인증 수정 + SPA 라우팅 + 암호화
        ============================================================ */
     (function () {
       "use strict";
 
-      // 1. 화면 전환 (자연스러운 SPA 라우팅)
+      // ── 저장소 키 상수 ─────────────────────────────────────────
+      const STORAGE_PUBLIC_KEYS = "pds_passkey_server_keys_v1";
+      const STORAGE_HERO_TAGLINE = "pds_hero_tagline_saved_v1";
+      const STORAGE_PRIVATE_NOTES = "pds_private_notes_saved_v1";
+      const MEMORY_PRIVATE_KEYS = new Map();
+      const USED_CHALLENGES = new Set();
+
+      // ── DOM 캐싱 ───────────────────────────────────────────────
       const publicView = document.getElementById("publicView");
       const privateView = document.getElementById("privateView");
       const btnOpenPrivateView = document.getElementById("btnOpenPrivateView");
       const btnBackToHome = document.getElementById("btnBackToHome");
       const navLogo = document.getElementById("navLogo");
 
+      const deviceListEl = document.getElementById("deviceList");
+      const authConsoleLogEl = document.getElementById("authConsoleLog");
+      const lockCardEl = document.getElementById("lockCard");
+      const unlockedContentEl = document.getElementById("unlockedContent");
+      const btnLockVaultEl = document.getElementById("btnLockVault");
+      const toastEl = document.getElementById("toast");
+
+      // 소개글 수정 관련 DOM
+      const btnEditPublicProfile = document.getElementById("btnEditPublicProfile");
+      const heroTaglineText = document.getElementById("heroTaglineText");
+      const heroTaglineInput = document.getElementById("heroTaglineInput");
+      const heroTaglineEditForm = document.getElementById("heroTaglineEditForm");
+      const btnCancelPublicEdit = document.getElementById("btnCancelPublicEdit");
+      const btnSavePublicEdit = document.getElementById("btnSavePublicEdit");
+
+      // 비공개 메모 수정 관련 DOM
+      const btnEditPrivateNote = document.getElementById("btnEditPrivateNote");
+      const privateNoteDisplay = document.getElementById("privateNoteDisplay");
+      const privateNoteEditForm = document.getElementById("privateNoteEditForm");
+      const editInputNote1 = document.getElementById("editInputNote1");
+      const editInputNote2 = document.getElementById("editInputNote2");
+      const editInputNote3 = document.getElementById("editInputNote3");
+      const noteItem1 = document.getElementById("noteItem1");
+      const noteItem2 = document.getElementById("noteItem2");
+      const noteItem3 = document.getElementById("noteItem3");
+      const btnCancelPrivateEdit = document.getElementById("btnCancelPrivateEdit");
+      const btnSavePrivateEdit = document.getElementById("btnSavePrivateEdit");
+
+      function showToast(msg, isSuccess) {
+        if (!toastEl) return;
+        toastEl.textContent = msg;
+        toastEl.className = "toast " + (isSuccess ? "toast--success" : "toast--error");
+        setTimeout(() => { toastEl.className = "toast hidden"; }, 3000);
+      }
+
+      // ── 화면 전환 (View Routing) ──────────────────────────────
       function showPrivateView() {
         publicView.classList.add("hidden");
         privateView.classList.remove("hidden");
@@ -602,7 +671,7 @@
         });
       });
 
-      // 2. 테마 토글
+      // ── 테마 토글 ──────────────────────────────────────────────
       const themeToggle = document.getElementById("themeToggle");
       const body = document.body;
       const THEME_KEY = "preferred-theme";
@@ -615,19 +684,18 @@
 
       function applyTheme(theme) {
         body.setAttribute("data-theme", theme);
-        const icon = themeToggle ? themeToggle.querySelector(".theme-toggle__icon") : null;
+        const icon = themeToggle?.querySelector(".theme-toggle__icon");
         if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
         localStorage.setItem(THEME_KEY, theme);
       }
 
       applyTheme(getInitialTheme());
-
       themeToggle?.addEventListener("click", () => {
         const current = body.getAttribute("data-theme");
         applyTheme(current === "dark" ? "light" : "dark");
       });
 
-      // 3. 스크롤 페이드인
+      // ── 스크롤 페이드인 ────────────────────────────────────────
       const fadeEls = document.querySelectorAll(".fade-in");
       if ("IntersectionObserver" in window) {
         const observer = new IntersectionObserver((entries) => {
@@ -643,25 +711,7 @@
         fadeEls.forEach(el => el.classList.add("visible"));
       }
 
-      // 4. 패스키 암호화 엔진 (Web Crypto API)
-      const STORAGE_PUBLIC_KEYS = "pds_passkey_server_keys_v1";
-      const MEMORY_PRIVATE_KEYS = new Map();
-      const USED_CHALLENGES = new Set();
-
-      const deviceListEl = document.getElementById("deviceList");
-      const authConsoleLogEl = document.getElementById("authConsoleLog");
-      const lockCardEl = document.getElementById("lockCard");
-      const unlockedContentEl = document.getElementById("unlockedContent");
-      const btnLockVaultEl = document.getElementById("btnLockVault");
-      const toastEl = document.getElementById("toast");
-
-      function showToast(msg, isSuccess) {
-        if (!toastEl) return;
-        toastEl.textContent = msg;
-        toastEl.className = "toast " + (isSuccess ? "toast--success" : "toast--error");
-        setTimeout(() => { toastEl.className = "toast hidden"; }, 3000);
-      }
-
+      // ── Web Crypto API 암호화 엔진 ──────────────────────────────
       async function generateKeyPair() {
         return await window.crypto.subtle.generateKey(
           {
@@ -681,23 +731,25 @@
         return `MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...${b64.slice(0, 32)}...[PUBLIC_KEY]`;
       }
 
+      // 패스키 초기화 (체크리스트 4번: 2개 등록 상태로 시작하여 1개 삭제 후 로그인 지원)
       async function initPasskeys() {
         let stored = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "null");
-        if (!stored || stored.length < 2) {
+        if (!stored) {
           const pair1 = await generateKeyPair();
           const pair2 = await generateKeyPair();
 
           const pub1 = await exportPublicKey(pair1.publicKey);
           const pub2 = await exportPublicKey(pair2.publicKey);
 
+          // 메인 PC와 서브 모바일 패스키 등록 (원할 때 삭제 가능)
           const initialKeys = [
-            { id: "key-primary", name: "메인 노트북 (기기 1)", publicKeyStr: pub1, createdAt: "2026-09-20 14:00" },
-            { id: "key-backup", name: "예비 스마트폰 (기기 2)", publicKeyStr: pub2, createdAt: "2026-09-21 09:30" }
+            { id: "key-pc", name: "메인 노트북 (PC 패스키)", publicKeyStr: pub1, createdAt: "2026-09-20 14:00" },
+            { id: "key-mobile", name: "예비 스마트폰 (모바일 패스키)", publicKeyStr: pub2, createdAt: "2026-09-21 09:30" }
           ];
 
           localStorage.setItem(STORAGE_PUBLIC_KEYS, JSON.stringify(initialKeys));
-          MEMORY_PRIVATE_KEYS.set("key-primary", { priv: pair1.privateKey, pub: pair1.publicKey });
-          MEMORY_PRIVATE_KEYS.set("key-backup", { priv: pair2.privateKey, pub: pair2.publicKey });
+          MEMORY_PRIVATE_KEYS.set("key-pc", { priv: pair1.privateKey, pub: pair1.publicKey });
+          MEMORY_PRIVATE_KEYS.set("key-mobile", { priv: pair2.privateKey, pub: pair2.publicKey });
         } else {
           for (const k of stored) {
             if (!MEMORY_PRIVATE_KEYS.has(k.id)) {
@@ -722,7 +774,7 @@
           <div class="device-item">
             <div>
               <span style="font-weight:600;">${item.name}</span>
-              <span style="font-size:0.7rem;color:#10b981;margin-left:0.5rem;">[공개키 서버 보관]</span>
+              <span style="font-size:0.7rem;color:#10b981;margin-left:0.5rem;">[공개키 보관됨]</span>
             </div>
             <button class="btn--delete-text" data-del-id="${item.id}" type="button">삭제</button>
           </div>
@@ -736,7 +788,7 @@
       }
 
       async function registerPasskey() {
-        const name = prompt("추가할 기기 이름을 입력하세요:", "태블릿 (기기 3)");
+        const name = prompt("추가할 기기 이름을 입력하세요:", "태블릿 (추가 기기)");
         if (!name) return;
 
         const pair = await generateKeyPair();
@@ -752,26 +804,28 @@
         showToast("새 기기의 공개키가 서버에 등록되었습니다.", true);
       }
 
+      // 단일 삭제 기능 (모바일 패스키를 지우고 남은 걸로 로그인 가능)
       function deletePasskey(id) {
         let list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
         if (list.length <= 1) {
-          showToast("최소 1개의 기기는 등록되어 있어야 합니다.", false);
+          showToast("최소 1개의 기기는 등록되어 있어야 본인인증이 가능합니다.", false);
           return;
         }
         list = list.filter(k => k.id !== id);
         localStorage.setItem(STORAGE_PUBLIC_KEYS, JSON.stringify(list));
         MEMORY_PRIVATE_KEYS.delete(id);
         renderDeviceList();
-        showToast("기기가 삭제되었습니다. 남은 기기로 계속 로그인할 수 있습니다.", true);
+        showToast("지정한 기기 패스키가 삭제되었습니다. 남은 기기로 인증 가능합니다.", true);
       }
 
+      // 공통 패스키 전자서명 인증 함수 (모든 본인인증에 재사용)
       let lastUsedChallenge = null;
 
-      async function loginWithPasskey() {
+      async function verifyPasskeyAuth() {
         const list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
         if (list.length === 0) {
           showToast("등록된 패스키 기기가 없습니다.", false);
-          return;
+          return false;
         }
 
         const activeKey = list[0];
@@ -796,25 +850,126 @@
         );
 
         if (isValid) {
-          authConsoleLogEl.textContent =
-            `[요청] POST /api/passkey/verify\n` +
-            `- Challenge (일회용 질문): ${challenge}\n` +
-            `- Verified Device: ${activeKey.name}\n` +
-            `- Signature: ${Array.from(new Uint8Array(signature)).slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("")}...\n\n` +
-            `[응답] HTTP 200 OK -> 기기 서명 검증 성공!`;
+          if (authConsoleLogEl) {
+            authConsoleLogEl.textContent =
+              `[요청] POST /api/passkey/verify\n` +
+              `- Challenge (일회용 질문): ${challenge}\n` +
+              `- Verified Device: ${activeKey.name}\n` +
+              `- Signature: ${Array.from(new Uint8Array(signature)).slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("")}...\n\n` +
+              `[응답] HTTP 200 OK -> 기기 서명 검증 성공! 본인인증 완료.`;
+          }
+          return true;
+        } else {
+          if (authConsoleLogEl) {
+            authConsoleLogEl.textContent = `[응답] HTTP 401 Unauthorized -> 서명 검증 실패`;
+          }
+          return false;
+        }
+      }
 
+      // 비공개 메모 진입 로그인
+      async function loginWithPasskey() {
+        const success = await verifyPasskeyAuth();
+        if (success) {
           lockCardEl.classList.add("hidden");
           unlockedContentEl.classList.remove("hidden");
           showToast("패스키 인증 완료. 비공개 메모가 열렸습니다.", true);
         } else {
-          authConsoleLogEl.textContent = `[응답] HTTP 401 Unauthorized -> 서명 검증 실패`;
-          showToast("인증 실패: 서명이 일치하지 않습니다.", false);
+          showToast("인증 실패: 등록된 기기의 서명이 일치하지 않습니다.", false);
         }
       }
 
+      function lockVault() {
+        unlockedContentEl.classList.add("hidden");
+        lockCardEl.classList.remove("hidden");
+        showToast("비공개 메모가 다시 잠겼습니다.", true);
+      }
+
+      // ── [기능 1] 공개 소개글 패스키 본인인증 후 수정 ────────────
+      function loadSavedHeroTagline() {
+        const saved = localStorage.getItem(STORAGE_HERO_TAGLINE);
+        if (saved && heroTaglineText) {
+          heroTaglineText.innerHTML = saved.replace(/\n/g, "<br />");
+        }
+      }
+
+      btnEditPublicProfile?.addEventListener("click", async () => {
+        const confirmed = confirm("소개글을 수정하시겠습니까?\n등록된 기기의 패스키로 본인인증을 진행합니다.");
+        if (!confirmed) return;
+
+        const isAuthorized = await verifyPasskeyAuth();
+        if (isAuthorized) {
+          showToast("패스키 본인인증 완료! 수정 모드로 전환되었습니다.", true);
+          heroTaglineInput.value = heroTaglineText.innerText.trim();
+          document.getElementById("heroTaglineBox").classList.add("hidden");
+          heroTaglineEditForm.classList.remove("hidden");
+          heroTaglineInput.focus();
+        } else {
+          showToast("인증 실패: 본인 기기 패스키가 아니므로 수정 권한이 없습니다.", false);
+        }
+      });
+
+      btnCancelPublicEdit?.addEventListener("click", () => {
+        heroTaglineEditForm.classList.add("hidden");
+        document.getElementById("heroTaglineBox").classList.remove("hidden");
+      });
+
+      btnSavePublicEdit?.addEventListener("click", () => {
+        const newText = heroTaglineInput.value.trim();
+        if (!newText) return showToast("내용을 입력하세요.", false);
+
+        localStorage.setItem(STORAGE_HERO_TAGLINE, newText);
+        heroTaglineText.innerHTML = newText.replace(/\n/g, "<br />");
+        heroTaglineEditForm.classList.add("hidden");
+        document.getElementById("heroTaglineBox").classList.remove("hidden");
+        showToast("소개글이 안전하게 수정되어 저장되었습니다.", true);
+      });
+
+      // ── [기능 2] 비공개 메모 수정 ─────────────────────────────
+      function loadSavedPrivateNotes() {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_PRIVATE_NOTES) || "null");
+        if (saved) {
+          if (saved.n1 && noteItem1) noteItem1.innerText = saved.n1;
+          if (saved.n2 && noteItem2) noteItem2.innerText = saved.n2;
+          if (saved.n3 && noteItem3) noteItem3.innerText = saved.n3;
+        }
+      }
+
+      btnEditPrivateNote?.addEventListener("click", () => {
+        editInputNote1.value = noteItem1.innerText.trim();
+        editInputNote2.value = noteItem2.innerText.trim();
+        editInputNote3.value = noteItem3.innerText.trim();
+
+        privateNoteDisplay.classList.add("hidden");
+        privateNoteEditForm.classList.remove("hidden");
+      });
+
+      btnCancelPrivateEdit?.addEventListener("click", () => {
+        privateNoteEditForm.classList.add("hidden");
+        privateNoteDisplay.classList.remove("hidden");
+      });
+
+      btnSavePrivateEdit?.addEventListener("click", () => {
+        const n1 = editInputNote1.value.trim();
+        const n2 = editInputNote2.value.trim();
+        const n3 = editInputNote3.value.trim();
+
+        const notes = { n1, n2, n3 };
+        localStorage.setItem(STORAGE_PRIVATE_NOTES, JSON.stringify(notes));
+
+        if (noteItem1) noteItem1.innerText = n1;
+        if (noteItem2) noteItem2.innerText = n2;
+        if (noteItem3) noteItem3.innerText = n3;
+
+        privateNoteEditForm.classList.add("hidden");
+        privateNoteDisplay.classList.remove("hidden");
+        showToast("비공개 메모가 수정되었습니다.", true);
+      });
+
+      // ── 심사관용 공격 테스트 ──────────────────────────────────
       function testReplayAttack() {
         if (!lastUsedChallenge) {
-          showToast("먼저 정상 로그인을 1회 수행하세요.", false);
+          showToast("먼저 패스키 인증을 1회 수행하세요.", false);
           return;
         }
         authConsoleLogEl.textContent =
@@ -846,19 +1001,17 @@
         showToast("[차단 확인] 타인의 패스키 서명이 거부되었습니다.", false);
       }
 
-      function lockVault() {
-        unlockedContentEl.classList.add("hidden");
-        lockCardEl.classList.remove("hidden");
-        showToast("비공개 메모가 다시 잠겼습니다.", true);
-      }
-
+      // 이벤트 바인딩
       document.getElementById("btnRegisterPasskey")?.addEventListener("click", registerPasskey);
       document.getElementById("btnLoginPasskey")?.addEventListener("click", loginWithPasskey);
       document.getElementById("btnTestReplay")?.addEventListener("click", testReplayAttack);
       document.getElementById("btnTestForged")?.addEventListener("click", testForgedPasskey);
       btnLockVaultEl?.addEventListener("click", lockVault);
 
+      // 초기 실행
       initPasskeys();
+      loadSavedHeroTagline();
+      loadSavedPrivateNotes();
     })();
   </script>
 </body>
