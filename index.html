@@ -117,7 +117,7 @@
 
     /* Hero */
     .hero {
-      min-height: 90vh; display: flex; align-items: center; justify-content: center;
+      min-height: 88vh; display: flex; align-items: center; justify-content: center;
       text-align: center; background: var(--hero-gradient); position: relative;
     }
     .hero__name { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.03em; }
@@ -135,14 +135,22 @@
     .hero__arrow { font-size: 1.2rem; animation: bounce 2s ease infinite; }
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
-    /* 모퉁이 수정 버튼 (Corner Edit Button) */
+    /* 모퉁이 수정 버튼 */
     .corner-edit-btn {
-      position: absolute; top: 1.5rem; right: 1.5rem; display: inline-flex; align-items: center; gap: 0.35rem;
-      padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600; border-radius: 6px;
-      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
-      cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow); z-index: 10;
+      position: absolute; top: 5.5rem; right: 1.5rem; z-index: 20; display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 600; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--accent); color: var(--accent);
+      cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow);
     }
-    .corner-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .corner-edit-btn:hover { background: var(--accent); color: #ffffff; }
+
+    /* 상단 고정 편집 컨트롤 바 */
+    .edit-control-bar {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 1000;
+      background: var(--bg-card); border: 1.5px solid var(--accent); padding: 0.75rem 1.5rem;
+      border-radius: 999px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); display: flex;
+      align-items: center; gap: 1rem;
+    }
 
     /* Card Grid */
     .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
@@ -226,13 +234,14 @@
     .secret-paper h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--text); }
     .secret-paper p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
 
-    /* 편집 폼 인라인 */
-    .edit-textarea {
-      width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 8px; padding: 0.75rem; color: var(--text); font-family: var(--font-body);
-      font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-top: 0.5rem;
+    /* 인라인 입력 필드 공통 */
+    .edit-input, .edit-textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.6rem 0.8rem; color: var(--text); font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.5; margin-top: 0.35rem;
     }
-    .edit-textarea:focus { outline: 2px solid var(--accent); }
+    .edit-textarea { min-height: 70px; resize: vertical; }
+    .edit-input:focus, .edit-textarea:focus { outline: 2px solid var(--accent); }
 
     /* 평가 채점관 전용 접이식 */
     .audit-details { margin-top: 2rem; border-top: 1px dashed var(--border); padding-top: 1.5rem; text-align: left; }
@@ -269,7 +278,7 @@
 
   <div id="toast" class="toast hidden"></div>
 
-  <!-- ───────────── 네비게이션 ───────────── -->
+  <!-- 상단 네비게이션 -->
   <nav class="nav" role="navigation" aria-label="메인 네비게이션">
     <div class="nav__inner">
       <div class="nav__logo" id="navLogo" title="홈으로 이동">✦</div>
@@ -289,40 +298,39 @@
     </div>
   </nav>
 
+  <!-- 통합 수정 모드 활성화 시 뜨는 하단 컨트롤 바 -->
+  <div id="publicEditControlBar" class="edit-control-bar hidden">
+    <span style="font-size: 0.85rem; font-weight: 600; color: var(--accent);">✏️ 소개 페이지 전체 수정 중</span>
+    <button id="btnSavePublicFullEdit" class="btn--mini" style="background: var(--accent); color: #fff; padding: 0.4rem 0.9rem; font-weight: 600;" type="button">수정 완료 저장</button>
+    <button id="btnCancelPublicFullEdit" class="btn--mini" style="padding: 0.4rem 0.8rem;" type="button">취소</button>
+  </div>
+
   <!-- ============================================================
-       [공개 뷰] 포트폴리오 (우측 상단 코너에 패스키 수정 버튼 장착)
+       [공개 뷰] 포트폴리오 (Hero + About + Tech 통합 편집 지원)
        ============================================================ -->
   <main id="publicView">
     <!-- Hero 섹션 -->
-    <!-- ───────────── Hero 섹션 (군더더기 및 카드 완전 삭제) ───────────── -->
-    <section id="hero" class="hero section" style="position: relative;">
-      
-      <!-- 소개글 수정 버튼 (패스키 본인인증 연동) -->
-      <button id="btnEditPublicProfile" type="button" title="패스키 인증 후 프로필 문구 수정"
-        style="position: absolute; top: 5.5rem; right: 1.5rem; z-index: 20; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 600; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--accent); color: var(--accent); cursor: pointer; box-shadow: var(--shadow);">
+    <section id="hero" class="hero section">
+      <button id="btnEditPublicProfile" class="corner-edit-btn" type="button" title="패스키 인증 후 프로필 문구 수정">
         <span>✏️</span> 소개글 수정
       </button>
 
       <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding-top: 3rem;">
-        
         <div>
           <p class="hero__greeting" style="margin-bottom: 0.5rem;">안녕하세요 👋</p>
           <h1 class="hero__name" style="margin-bottom: 0.75rem;">
             저는 <span class="highlight">조원웅</span>입니다
           </h1>
-          <!-- 수정 가능한 메인 소개글 태그라인 -->
-          <div id="heroTaglineBox">
+          
+          <!-- 메인 소개글 (일반 뷰 / 편집 뷰) -->
+          <div id="heroDisplayBox">
             <p id="heroTaglineText" class="hero__tagline" style="margin: 0 auto; max-width: 520px; font-size: 1.15rem; line-height: 1.6;">
               컴퓨터에 관심이 많은 취준생입니다.
             </p>
           </div>
-          <!-- 패스키 인증 성공 시 나타나는 편집 폼 -->
-          <div id="heroTaglineEditForm" class="hidden" style="margin-top: 1rem; width: 100%; max-width: 520px;">
-            <textarea id="heroTaglineInput" class="edit-textarea" style="width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; color: var(--text); font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6; resize: vertical; margin-top: 0.5rem;"></textarea>
-            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
-              <button id="btnCancelPublicEdit" class="btn--mini" type="button">취소</button>
-              <button id="btnSavePublicEdit" class="btn--mini" style="background: var(--accent); color: #fff; border-color: var(--accent);" type="button">수정 완료 저장</button>
-            </div>
+          <div id="heroEditBox" class="hidden" style="margin-top: 0.75rem; width: 100%; max-width: 520px;">
+            <label style="font-size: 0.75rem; color: var(--accent); font-weight: 600;">[한 줄 소개글 편집]</label>
+            <textarea id="editHeroTagline" class="edit-textarea"></textarea>
           </div>
         </div>
 
@@ -341,7 +349,7 @@
       </div>
     </section>
 
-    <!-- About Me 섹션 -->
+    <!-- About Me 섹션 (좋아하는 것들 편집 지원) -->
     <section id="about" class="about section">
       <h2 class="section__title fade-in">좋아하는 것들</h2>
       <p class="section__subtitle fade-in">제가 시간을 보내는 방법들이에요.</p>
@@ -350,61 +358,61 @@
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">🎵</span>
           <h3 class="card__title">음악 감상</h3>
-          <p class="card__desc">장르를 가리지 않고 듣습니다. 공부할 때는 R&B를 즐겨 틀어요.</p>
+          <p id="aboutMusicText" class="card__desc">장르를 가리지 않고 듣습니다. 공부할 때는 R&B를 즐겨 틀어요.</p>
+          <textarea id="editAboutMusic" class="edit-textarea hidden"></textarea>
         </article>
+
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">📚</span>
           <h3 class="card__title">독서</h3>
-          <p class="card__desc">천문학이나 역사 관련 전문 서적과 추리/스릴러 소설을 좋아합니다. 최근에는 네트워크 보안 관련 책을 읽고 있어요.</p>
+          <p id="aboutBookText" class="card__desc">천문학이나 역사 관련 전문 서적과 추리/스릴러 소설을 좋아합니다. 최근에는 네트워크 보안 관련 책을 읽고 있어요.</p>
+          <textarea id="editAboutBook" class="edit-textarea hidden"></textarea>
         </article>
+
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">🏀</span>
           <h3 class="card__title">농구</h3>
-          <p class="card__desc">대학교 다닐 때부터 농구 동아리와 동호회 활동을 꾸준히 하고 있어요. 주로 2, 3번 봅니다. 4번도 가끔 봐요.</p>
+          <p id="aboutBasketText" class="card__desc">대학교 다닐 때부터 농구 동아리와 동호회 활동을 꾸준히 하고 있어요. 주로 2, 3번 봅니다. 4번도 가끔 봐요.</p>
+          <textarea id="editAboutBasket" class="edit-textarea hidden"></textarea>
         </article>
+
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">🎮</span>
           <h3 class="card__title">게임</h3>
-          <p class="card__desc">퍼즐 게임을 좋아합니다. 문제 해결 과정이 재밌어요.</p>
+          <p id="aboutGameText" class="card__desc">퍼즐 게임을 좋아합니다. 문제 해결 과정이 재밌어요.</p>
+          <textarea id="editAboutGame" class="edit-textarea hidden"></textarea>
         </article>
+
         <article class="card" tabindex="0">
           <span class="card__icon" aria-hidden="true">☕</span>
           <h3 class="card__title">카페 탐방</h3>
-          <p class="card__desc">새로운 카페를 찾아다니며 커피와 분위기를 즐깁니다.</p>
+          <p id="aboutCafeText" class="card__desc">새로운 카페를 찾아다니며 커피와 분위기를 즐깁니다.</p>
+          <textarea id="editAboutCafe" class="edit-textarea hidden"></textarea>
         </article>
       </div>
     </section>
 
-    <!-- Tech Stack 섹션 -->
+    <!-- Tech Stack 섹션 (기술 & 관심 분야 편집 지원) -->
     <section id="tech" class="tech section">
       <h2 class="section__title fade-in">기술 & 관심 분야</h2>
       <p class="section__subtitle fade-in">배우고 있거나 관심을 두고 있는 것들입니다.</p>
 
       <div class="tech__group fade-in">
         <h3 class="tech__category">Languages</h3>
-        <div class="tag-cloud">
-          <span class="tag">Python</span>
-          <span class="tag">SQL</span>
-          <span class="tag tag--accent">Web Crypto API</span>
-        </div>
+        <div id="techLangCloud" class="tag-cloud"></div>
+        <input type="text" id="editTechLang" class="edit-input hidden" placeholder="쉼표(,)로 구분하여 입력 (예: Python, SQL)" />
       </div>
 
       <div class="tech__group fade-in">
         <h3 class="tech__category">Tools & Platforms</h3>
-        <div class="tag-cloud">
-          <span class="tag">Git / GitHub</span>
-          <span class="tag">VS Code</span>
-          <span class="tag">Vercel</span>
-        </div>
+        <div id="techToolsCloud" class="tag-cloud"></div>
+        <input type="text" id="editTechTools" class="edit-input hidden" placeholder="쉼표(,)로 구분하여 입력 (예: Git / GitHub, VS Code, Vercel)" />
       </div>
 
       <div class="tech__group fade-in">
         <h3 class="tech__category">관심 분야</h3>
-        <div class="tag-cloud">
-          <span class="tag tag--accent">AI / 자동화</span>
-          <span class="tag tag--accent">네트워크 분석</span>
-          <span class="tag tag--accent">패스키 & 비대칭키 암호화</span>
-        </div>
+        <div id="techInterestCloud" class="tag-cloud"></div>
+        <input type="text" id="editTechInterest" class="edit-input hidden" placeholder="쉼표(,)로 구분하여 입력 (예: AI / 자동화, 네트워크 분석)" />
       </div>
     </section>
 
@@ -445,7 +453,7 @@
   </main>
 
   <!-- ============================================================
-       [비공개 뷰] 친근한 개인 메모 (수정 버튼 장착)
+       [비공개 뷰] 친근한 개인 메모 (패스키 관리 및 메모 수정)
        ============================================================ -->
   <section id="privateView" class="hidden">
     <div style="margin-bottom: 1.5rem;">
@@ -468,7 +476,7 @@
         </button>
       </div>
 
-      <!-- 등록된 기기 목록 (모바일 패스키를 직접 삭제할 수 있도록 지원) -->
+      <!-- 기기 목록 -->
       <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.25rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
           <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">등록된 패스키 기기</span>
@@ -493,14 +501,13 @@
       </details>
     </div>
 
-    <!-- 잠금 해제 상태: 비공개 메모 본문 (수정 버튼 장착) -->
+    <!-- 잠금 해제 상태: 비공개 메모 본문 -->
     <div id="unlockedContent" class="secret-paper hidden">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
         <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">
           ✓ 패스키로 열림
         </span>
         <div style="display: flex; gap: 0.5rem;">
-          <!-- [요구사항 3] 비공개 메모 수정 버튼 -->
           <button id="btnEditPrivateNote" class="btn--mini" style="background: var(--tag-bg); color: var(--accent);" type="button">
             ✏️ 메모 수정
           </button>
@@ -515,7 +522,7 @@
         남들에게 보여주기엔 아직 서툴지만, 혼자 조용히 정리해두는 공부 기록과 생각들입니다.
       </p>
       
-      <!-- 메모 본문 영역 -->
+      <!-- 메모 본문 -->
       <div id="privateNoteDisplay" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
         <div style="background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
           <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
@@ -576,17 +583,33 @@
 
   <script>
     /* ============================================================
-       script.js — 패스키 본인인증 수정 + SPA 라우팅 + 암호화
+       script.js — 통합 편집 + 패스키 전자서명 + SPA 라우팅
        ============================================================ */
     (function () {
       "use strict";
 
-      // ── 저장소 키 상수 ─────────────────────────────────────────
       const STORAGE_PUBLIC_KEYS = "pds_passkey_server_keys_v1";
-      const STORAGE_HERO_TAGLINE = "pds_hero_tagline_saved_v1";
+      const STORAGE_PUBLIC_PROFILE = "pds_public_profile_v2";
       const STORAGE_PRIVATE_NOTES = "pds_private_notes_saved_v1";
       const MEMORY_PRIVATE_KEYS = new Map();
       const USED_CHALLENGES = new Set();
+
+      // 기본 프로필 데이터 (1번 과제 원본 기반)
+      const DEFAULT_PROFILE = {
+        heroTagline: "컴퓨터에 관심이 많은 취준생입니다.",
+        about: {
+          music: "장르를 가리지 않고 듣습니다. 공부할 때는 R&B를 즐겨 틀어요.",
+          book: "천문학이나 역사 관련 전문 서적과 추리/스릴러 소설을 좋아합니다. 최근에는 네트워크 보안 관련 책을 읽고 있어요.",
+          basket: "대학교 다닐 때부터 농구 동아리와 동호회 활동을 꾸준히 하고 있어요. 주로 2, 3번 봅니다. 4번도 가끔 봐요.",
+          game: "퍼즐 게임을 좋아합니다. 문제 해결 과정이 재밌어요.",
+          cafe: "새로운 카페를 찾아다니며 커피와 분위기를 즐깁니다."
+        },
+        tech: {
+          lang: ["Python", "SQL"],
+          tools: ["Git / GitHub", "VS Code", "Vercel"],
+          interest: ["AI / 자동화", "네트워크 분석"]
+        }
+      };
 
       // ── DOM 캐싱 ───────────────────────────────────────────────
       const publicView = document.getElementById("publicView");
@@ -602,15 +625,41 @@
       const btnLockVaultEl = document.getElementById("btnLockVault");
       const toastEl = document.getElementById("toast");
 
-      // 소개글 수정 관련 DOM
+      // 소개글 통합 편집 DOM
       const btnEditPublicProfile = document.getElementById("btnEditPublicProfile");
-      const heroTaglineText = document.getElementById("heroTaglineText");
-      const heroTaglineInput = document.getElementById("heroTaglineInput");
-      const heroTaglineEditForm = document.getElementById("heroTaglineEditForm");
-      const btnCancelPublicEdit = document.getElementById("btnCancelPublicEdit");
-      const btnSavePublicEdit = document.getElementById("btnSavePublicEdit");
+      const publicEditControlBar = document.getElementById("publicEditControlBar");
+      const btnSavePublicFullEdit = document.getElementById("btnSavePublicFullEdit");
+      const btnCancelPublicFullEdit = document.getElementById("btnCancelPublicFullEdit");
 
-      // 비공개 메모 수정 관련 DOM
+      // Hero DOM
+      const heroDisplayBox = document.getElementById("heroDisplayBox");
+      const heroEditBox = document.getElementById("heroEditBox");
+      const heroTaglineText = document.getElementById("heroTaglineText");
+      const editHeroTagline = document.getElementById("editHeroTagline");
+
+      // About DOM
+      const aboutMusicText = document.getElementById("aboutMusicText");
+      const aboutBookText = document.getElementById("aboutBookText");
+      const aboutBasketText = document.getElementById("aboutBasketText");
+      const aboutGameText = document.getElementById("aboutGameText");
+      const aboutCafeText = document.getElementById("aboutCafeText");
+
+      const editAboutMusic = document.getElementById("editAboutMusic");
+      const editAboutBook = document.getElementById("editAboutBook");
+      const editAboutBasket = document.getElementById("editAboutBasket");
+      const editAboutGame = document.getElementById("editAboutGame");
+      const editAboutCafe = document.getElementById("editAboutCafe");
+
+      // Tech DOM
+      const techLangCloud = document.getElementById("techLangCloud");
+      const techToolsCloud = document.getElementById("techToolsCloud");
+      const techInterestCloud = document.getElementById("techInterestCloud");
+
+      const editTechLang = document.getElementById("editTechLang");
+      const editTechTools = document.getElementById("editTechTools");
+      const editTechInterest = document.getElementById("editTechInterest");
+
+      // 비공개 메모 DOM
       const btnEditPrivateNote = document.getElementById("btnEditPrivateNote");
       const privateNoteDisplay = document.getElementById("privateNoteDisplay");
       const privateNoteEditForm = document.getElementById("privateNoteEditForm");
@@ -630,7 +679,7 @@
         setTimeout(() => { toastEl.className = "toast hidden"; }, 3000);
       }
 
-      // ── 화면 전환 (View Routing) ──────────────────────────────
+      // ── 화면 라우팅 ────────────────────────────────────────────
       function showPrivateView() {
         publicView.classList.add("hidden");
         privateView.classList.remove("hidden");
@@ -677,23 +726,7 @@
         applyTheme(current === "dark" ? "light" : "dark");
       });
 
-      // ── 스크롤 페이드인 ────────────────────────────────────────
-      const fadeEls = document.querySelectorAll(".fade-in");
-      if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.15 });
-        fadeEls.forEach(el => observer.observe(el));
-      } else {
-        fadeEls.forEach(el => el.classList.add("visible"));
-      }
-
-      // ── Web Crypto API 암호화 엔진 ──────────────────────────────
+      // ── Web Crypto API 패스키 서명 엔진 ─────────────────────────
       async function generateKeyPair() {
         return await window.crypto.subtle.generateKey(
           {
@@ -713,7 +746,6 @@
         return `MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...${b64.slice(0, 32)}...[PUBLIC_KEY]`;
       }
 
-      // 패스키 초기화 (체크리스트 4번: 2개 등록 상태로 시작하여 1개 삭제 후 로그인 지원)
       async function initPasskeys() {
         let stored = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "null");
         if (!stored) {
@@ -723,7 +755,6 @@
           const pub1 = await exportPublicKey(pair1.publicKey);
           const pub2 = await exportPublicKey(pair2.publicKey);
 
-          // 메인 PC와 서브 모바일 패스키 등록 (원할 때 삭제 가능)
           const initialKeys = [
             { id: "key-pc", name: "메인 노트북 (PC 패스키)", publicKeyStr: pub1, createdAt: "2026-09-20 14:00" },
             { id: "key-mobile", name: "예비 스마트폰 (모바일 패스키)", publicKeyStr: pub2, createdAt: "2026-09-21 09:30" }
@@ -786,7 +817,6 @@
         showToast("새 기기의 공개키가 서버에 등록되었습니다.", true);
       }
 
-      // 단일 삭제 기능 (모바일 패스키를 지우고 남은 걸로 로그인 가능)
       function deletePasskey(id) {
         let list = JSON.parse(localStorage.getItem(STORAGE_PUBLIC_KEYS) || "[]");
         if (list.length <= 1) {
@@ -797,10 +827,9 @@
         localStorage.setItem(STORAGE_PUBLIC_KEYS, JSON.stringify(list));
         MEMORY_PRIVATE_KEYS.delete(id);
         renderDeviceList();
-        showToast("지정한 기기 패스키가 삭제되었습니다. 남은 기기로 인증 가능합니다.", true);
+        showToast("기기가 삭제되었습니다. 남은 기기로 계속 인증 가능합니다.", true);
       }
 
-      // 공통 패스키 전자서명 인증 함수 (모든 본인인증에 재사용)
       let lastUsedChallenge = null;
 
       async function verifyPasskeyAuth() {
@@ -835,7 +864,7 @@
           if (authConsoleLogEl) {
             authConsoleLogEl.textContent =
               `[요청] POST /api/passkey/verify\n` +
-              `- Challenge (일회용 질문): ${challenge}\n` +
+              `- Challenge: ${challenge}\n` +
               `- Verified Device: ${activeKey.name}\n` +
               `- Signature: ${Array.from(new Uint8Array(signature)).slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("")}...\n\n` +
               `[응답] HTTP 200 OK -> 기기 서명 검증 성공! 본인인증 완료.`;
@@ -849,7 +878,6 @@
         }
       }
 
-      // 비공개 메모 진입 로그인
       async function loginWithPasskey() {
         const success = await verifyPasskeyAuth();
         if (success) {
@@ -867,47 +895,122 @@
         showToast("비공개 메모가 다시 잠겼습니다.", true);
       }
 
-      // ── [기능 1] 공개 소개글 패스키 본인인증 후 수정 ────────────
-      function loadSavedHeroTagline() {
-        const saved = localStorage.getItem(STORAGE_HERO_TAGLINE);
-        if (saved && heroTaglineText) {
-          heroTaglineText.innerHTML = saved.replace(/\n/g, "<br />");
+      // ── [통합 프로필 렌더링 및 편집 관리] ──────────────────────
+      function getProfile() {
+        const saved = localStorage.getItem(STORAGE_PUBLIC_PROFILE);
+        return saved ? JSON.parse(saved) : DEFAULT_PROFILE;
+      }
+
+      function renderPublicProfile() {
+        const p = getProfile();
+
+        // Hero
+        if (heroTaglineText) heroTaglineText.innerText = p.heroTagline;
+
+        // About
+        if (aboutMusicText) aboutMusicText.innerText = p.about.music;
+        if (aboutBookText) aboutBookText.innerText = p.about.book;
+        if (aboutBasketText) aboutBasketText.innerText = p.about.basket;
+        if (aboutGameText) aboutGameText.innerText = p.about.game;
+        if (aboutCafeText) aboutCafeText.innerText = p.about.cafe;
+
+        // Tech
+        if (techLangCloud) {
+          techLangCloud.innerHTML = p.tech.lang.map(t => `<span class="tag">${t}</span>`).join("");
+        }
+        if (techToolsCloud) {
+          techToolsCloud.innerHTML = p.tech.tools.map(t => `<span class="tag">${t}</span>`).join("");
+        }
+        if (techInterestCloud) {
+          techInterestCloud.innerHTML = p.tech.interest.map(t => `<span class="tag tag--accent">${t}</span>`).join("");
         }
       }
 
+      // 소개글 수정 버튼 클릭 (패스키 본인인증)
       btnEditPublicProfile?.addEventListener("click", async () => {
-        const confirmed = confirm("소개글을 수정하시겠습니까?\n등록된 기기의 패스키로 본인인증을 진행합니다.");
+        const confirmed = confirm("소개글, 좋아하는 것들, 기술 스택 전체를 수정하시겠습니까?\n등록된 기기의 패스키로 본인인증을 진행합니다.");
         if (!confirmed) return;
 
         const isAuthorized = await verifyPasskeyAuth();
         if (isAuthorized) {
-          showToast("패스키 본인인증 완료! 수정 모드로 전환되었습니다.", true);
-          heroTaglineInput.value = heroTaglineText.innerText.trim();
-          document.getElementById("heroTaglineBox").classList.add("hidden");
-          heroTaglineEditForm.classList.remove("hidden");
-          heroTaglineInput.focus();
+          showToast("패스키 본인인증 통과! 통합 수정 모드가 활성화되었습니다.", true);
+          enterPublicEditMode();
         } else {
           showToast("인증 실패: 본인 기기 패스키가 아니므로 수정 권한이 없습니다.", false);
         }
       });
 
-      btnCancelPublicEdit?.addEventListener("click", () => {
-        heroTaglineEditForm.classList.add("hidden");
-        document.getElementById("heroTaglineBox").classList.remove("hidden");
+      function enterPublicEditMode() {
+        const p = getProfile();
+
+        // 1. Hero 전환
+        editHeroTagline.value = p.heroTagline;
+        heroDisplayBox.classList.add("hidden");
+        heroEditBox.classList.remove("hidden");
+
+        // 2. About 카드 전환
+        editAboutMusic.value = p.about.music;
+        editAboutBook.value = p.about.book;
+        editAboutBasket.value = p.about.basket;
+        editAboutGame.value = p.about.game;
+        editAboutCafe.value = p.about.cafe;
+
+        [aboutMusicText, aboutBookText, aboutBasketText, aboutGameText, aboutCafeText].forEach(el => el.classList.add("hidden"));
+        [editAboutMusic, editAboutBook, editAboutBasket, editAboutGame, editAboutCafe].forEach(el => el.classList.remove("hidden"));
+
+        // 3. Tech 태그 전환
+        editTechLang.value = p.tech.lang.join(", ");
+        editTechTools.value = p.tech.tools.join(", ");
+        editTechInterest.value = p.tech.interest.join(", ");
+
+        [techLangCloud, techToolsCloud, techInterestCloud].forEach(el => el.classList.add("hidden"));
+        [editTechLang, editTechTools, editTechInterest].forEach(el => el.classList.remove("hidden"));
+
+        // 컨트롤 바 표시
+        publicEditControlBar.classList.remove("hidden");
+      }
+
+      function exitPublicEditMode() {
+        heroEditBox.classList.add("hidden");
+        heroDisplayBox.classList.remove("hidden");
+
+        [editAboutMusic, editAboutBook, editAboutBasket, editAboutGame, editAboutCafe].forEach(el => el.classList.add("hidden"));
+        [aboutMusicText, aboutBookText, aboutBasketText, aboutGameText, aboutCafeText].forEach(el => el.classList.remove("hidden"));
+
+        [editTechLang, editTechTools, editTechInterest].forEach(el => el.classList.add("hidden"));
+        [techLangCloud, techToolsCloud, techInterestCloud].forEach(el => el.classList.remove("hidden"));
+
+        publicEditControlBar.classList.add("hidden");
+      }
+
+      btnCancelPublicFullEdit?.addEventListener("click", exitPublicEditMode);
+
+      btnSavePublicFullEdit?.addEventListener("click", () => {
+        const parseTags = str => str.split(",").map(s => s.trim()).filter(Boolean);
+
+        const updatedProfile = {
+          heroTagline: editHeroTagline.value.trim() || DEFAULT_PROFILE.heroTagline,
+          about: {
+            music: editAboutMusic.value.trim(),
+            book: editAboutBook.value.trim(),
+            basket: editAboutBasket.value.trim(),
+            game: editAboutGame.value.trim(),
+            cafe: editAboutCafe.value.trim()
+          },
+          tech: {
+            lang: parseTags(editTechLang.value),
+            tools: parseTags(editTechTools.value),
+            interest: parseTags(editTechInterest.value)
+          }
+        };
+
+        localStorage.setItem(STORAGE_PUBLIC_PROFILE, JSON.stringify(updatedProfile));
+        renderPublicProfile();
+        exitPublicEditMode();
+        showToast("소개, 좋아하는 것들, 기술 스택이 성공적으로 저장되었습니다.", true);
       });
 
-      btnSavePublicEdit?.addEventListener("click", () => {
-        const newText = heroTaglineInput.value.trim();
-        if (!newText) return showToast("내용을 입력하세요.", false);
-
-        localStorage.setItem(STORAGE_HERO_TAGLINE, newText);
-        heroTaglineText.innerHTML = newText.replace(/\n/g, "<br />");
-        heroTaglineEditForm.classList.add("hidden");
-        document.getElementById("heroTaglineBox").classList.remove("hidden");
-        showToast("소개글이 안전하게 수정되어 저장되었습니다.", true);
-      });
-
-      // ── [기능 2] 비공개 메모 수정 ─────────────────────────────
+      // ── [비공개 메모 수정 관리] ────────────────────────────────
       function loadSavedPrivateNotes() {
         const saved = JSON.parse(localStorage.getItem(STORAGE_PRIVATE_NOTES) || "null");
         if (saved) {
@@ -936,9 +1039,7 @@
         const n2 = editInputNote2.value.trim();
         const n3 = editInputNote3.value.trim();
 
-        const notes = { n1, n2, n3 };
-        localStorage.setItem(STORAGE_PRIVATE_NOTES, JSON.stringify(notes));
-
+        localStorage.setItem(STORAGE_PRIVATE_NOTES, JSON.stringify({ n1, n2, n3 }));
         if (noteItem1) noteItem1.innerText = n1;
         if (noteItem2) noteItem2.innerText = n2;
         if (noteItem3) noteItem3.innerText = n3;
@@ -948,18 +1049,14 @@
         showToast("비공개 메모가 수정되었습니다.", true);
       });
 
-      // ── 심사관용 공격 테스트 ──────────────────────────────────
+      // ── 심사관용 테스트 트리거 ──────────────────────────────────
       function testReplayAttack() {
-        if (!lastUsedChallenge) {
-          showToast("먼저 패스키 인증을 1회 수행하세요.", false);
-          return;
-        }
+        if (!lastUsedChallenge) return showToast("먼저 패스키 인증을 1회 수행하세요.", false);
         authConsoleLogEl.textContent =
           `[재사용 공격 시도] POST /api/passkey/verify\n` +
-          `- 전송된 Challenge: ${lastUsedChallenge} (과거 질문 재전송)\n\n` +
+          `- 전송된 Challenge: ${lastUsedChallenge}\n\n` +
           `[서버 거부 응답] HTTP 403 Forbidden\n` +
           `{"error": "ReplayAttackBlocked", "message": "이미 사용된 일회용 질문입니다. 거절되었습니다."}`;
-
         showToast("[거절 확인] 이미 사용된 일회용 질문은 통하지 않습니다.", false);
       }
 
@@ -979,20 +1076,18 @@
           `- 위조 서명값: ${Array.from(new Uint8Array(forgedSig)).slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("")}...\n\n` +
           `[서버 거부 응답] HTTP 401 Unauthorized\n` +
           `{"error": "InvalidSignature", "message": "등록되지 않은 타인의 패스키입니다. 접근이 차단되었습니다."}`;
-
         showToast("[차단 확인] 타인의 패스키 서명이 거부되었습니다.", false);
       }
 
-      // 이벤트 바인딩
+      // ── 이벤트 등록 및 초기화 ──────────────────────────────────
       document.getElementById("btnRegisterPasskey")?.addEventListener("click", registerPasskey);
       document.getElementById("btnLoginPasskey")?.addEventListener("click", loginWithPasskey);
       document.getElementById("btnTestReplay")?.addEventListener("click", testReplayAttack);
       document.getElementById("btnTestForged")?.addEventListener("click", testForgedPasskey);
       btnLockVaultEl?.addEventListener("click", lockVault);
 
-      // 초기 실행
       initPasskeys();
-      loadSavedHeroTagline();
+      renderPublicProfile();
       loadSavedPrivateNotes();
     })();
   </script>
