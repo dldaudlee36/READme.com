@@ -294,13 +294,16 @@
        ============================================================ -->
   <main id="publicView">
     <!-- Hero 섹션 -->
-    <section id="hero" class="hero section">
-      <!-- [요구사항 1] 공개 소개글 코너 수정 버튼 -->
-      <button id="btnEditPublicProfile" class="corner-edit-btn" type="button" title="패스키 인증 후 프로필 문구 수정">
+    <!-- ───────────── Hero 섹션 ───────────── -->
+    <section id="hero" class="hero section" style="position: relative;">
+      
+      <!-- 수정 버튼: 네비게이션 아래로 안전하게 위치 조정 (top: 5.5rem) -->
+      <button id="btnEditPublicProfile" type="button" title="패스키 인증 후 프로필 문구 수정"
+        style="position: absolute; top: 5.5rem; right: 1.5rem; z-index: 20; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 600; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--accent); color: var(--accent); cursor: pointer; box-shadow: var(--shadow);">
         <span>✏️</span> 소개글 수정
       </button>
 
-      <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
+      <div class="hero__content fade-in" style="max-width: 680px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; padding-top: 2rem;">
         
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--tag-accent-bg); border: 1px solid var(--tag-accent-border); font-size: 0.8rem; color: var(--accent); font-family: var(--font-mono);">
           <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
@@ -321,7 +324,7 @@
           </div>
           <!-- 패스키 인증 성공 시 나타나는 편집 폼 -->
           <div id="heroTaglineEditForm" class="hidden" style="margin-top: 1rem; width: 100%; max-width: 520px;">
-            <textarea id="heroTaglineInput" class="edit-textarea"></textarea>
+            <textarea id="heroTaglineInput" class="edit-textarea" style="width: 100%; min-height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; color: var(--text); font-family: var(--font-body); font-size: 0.85rem; line-height: 1.6; resize: vertical; margin-top: 0.5rem;"></textarea>
             <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
               <button id="btnCancelPublicEdit" class="btn--mini" type="button">취소</button>
               <button id="btnSavePublicEdit" class="btn--mini" style="background: var(--accent); color: #fff; border-color: var(--accent);" type="button">수정 완료 저장</button>
